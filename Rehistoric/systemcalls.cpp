@@ -25,7 +25,7 @@ QString createPatch(QString filename1, QString filename2)
 
 QString patchName(QString filename1, QString filename2)
 {
-    return filename1 + filename2 + ".patch";
+    return filename1.split("/").last() + filename2.split("/").last() + ".patch";
 }
 
 void applyPatch(QString patchName, QString outputName)

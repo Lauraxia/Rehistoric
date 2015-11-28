@@ -13,7 +13,6 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QColumnView>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
@@ -21,6 +20,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
+#include <QtWidgets/QTreeView>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -30,7 +30,7 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QLabel *label;
-    QColumnView *columnView;
+    QTreeView *treeView;
     QMenuBar *menuBar;
     QMenu *menuExtract_All;
     QToolBar *mainToolBar;
@@ -46,9 +46,9 @@ public:
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(130, 80, 57, 15));
-        columnView = new QColumnView(centralWidget);
-        columnView->setObjectName(QStringLiteral("columnView"));
-        columnView->setGeometry(QRect(20, 10, 341, 201));
+        treeView = new QTreeView(centralWidget);
+        treeView->setObjectName(QStringLiteral("treeView"));
+        treeView->setGeometry(QRect(10, 10, 256, 192));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));

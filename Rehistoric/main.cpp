@@ -13,16 +13,25 @@ int view(QString file);
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    for (int j=0; j<argc; j++)
+    {
+    qDebug() << argv[j];
+    }
 
     if (argc == 1) // no arg, only prog name
     {
         qDebug() << "What are you doing?";
+        MainWindow w;
+        w.show();
+        //return 0;
     }
     else if (argc == 2)
     {
         //only 1 arg, so it must be the .hist file, which should be viewed:
         QString file = argv[1];
         view(file);
+        MainWindow w;
+        w.show();
     }
     else
     {
@@ -36,6 +45,8 @@ int main(int argc, char *argv[])
         for (int i=2; i<argc; i++)
         {
             files[i-2] = argv[i];
+            MainWindow w;
+            w.show();
             qDebug() << files[i-2];
         }
 
@@ -43,6 +54,7 @@ int main(int argc, char *argv[])
         if (mode == "create")
         {
             create(files, numFiles);
+            //return 0;
         }
         else if (mode == "add")
         {
@@ -74,7 +86,7 @@ int create(QString *files, int numFiles)
 
     QString archive = createArchive("hist", patches << files[0]);
     qDebug() << archive;
-    return 0;
+    //return 0;
 }
 
 int extract(QString *files)

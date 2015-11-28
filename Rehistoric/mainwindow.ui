@@ -27,13 +27,13 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QColumnView" name="columnView">
+   <widget class="QTreeView" name="treeView">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>10</y>
-      <width>341</width>
-      <height>201</height>
+      <width>256</width>
+      <height>192</height>
      </rect>
     </property>
    </widget>
