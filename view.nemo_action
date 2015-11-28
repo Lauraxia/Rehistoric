@@ -1,0 +1,8 @@
+[Nemo Action]
+Name = View
+Comment = View the contents of the .hist
+
+Exec = gedit %f
+
+Selection = s
+Extensions = .hist; 

@@ -1,0 +1,7 @@
+[Nemo Action]
+Name = Add
+Comment = Add this file to the archive
+Exec = gedit %N
+Selection = s
+Extensions = nodirs; 
+ 
