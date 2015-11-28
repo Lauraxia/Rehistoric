@@ -3,6 +3,7 @@
 #include <QDirModel>
 #include <QTreeView>
 #include <QDebug>
+#include <QTreeWidgetItem>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -23,12 +24,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::addFile()
 {
-    QDirModel model;
         //QTreeView tree = ui->treeView;
+    QStringList list;
+    list.append("test");
+    list.append("test2");
+    list.append("test3");
+    list.append("test4");
+    QTreeWidgetItem *test = new QTreeWidgetItem(list);
+ui->treeWidget->addTopLevelItem(test);
+   /* ui->treeView->setModel(new QDirModel());//&model);
 
-    ui->treeView->setModel(&model);
-
-    ui->treeView->setRootIndex(model.index(QDir::homePath()));
+    //ui->treeView->setRootIndex(model.index(QDir::homePath()));
     qDebug() << QDir::homePath();
     //ui->treeView->setColumnHidden( 1, true );
     ui->treeView->setColumnHidden( 2, true );
@@ -36,5 +42,5 @@ void MainWindow::addFile()
 
     ui->treeView->setWindowTitle("hello");//QObject::tr("Dir View:")+QDir::homePath());
     ui->treeView->resize(640, 480);
-    ui->treeView->show();
+    ui->treeView->show();*/
 }

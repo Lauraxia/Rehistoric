@@ -27,15 +27,35 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QTreeView" name="treeView">
+   <widget class="QTreeWidget" name="treeWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
-      <width>256</width>
+      <y>0</y>
+      <width>371</width>
       <height>192</height>
      </rect>
     </property>
+    <column>
+     <property name="text">
+      <string>Filename</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Size</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Date Created</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>Date Modified</string>
+     </property>
+    </column>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

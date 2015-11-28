@@ -20,7 +20,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
-#include <QtWidgets/QTreeView>
+#include <QtWidgets/QTreeWidget>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -30,7 +30,7 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QLabel *label;
-    QTreeView *treeView;
+    QTreeWidget *treeWidget;
     QMenuBar *menuBar;
     QMenu *menuExtract_All;
     QToolBar *mainToolBar;
@@ -46,9 +46,9 @@ public:
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(130, 80, 57, 15));
-        treeView = new QTreeView(centralWidget);
-        treeView->setObjectName(QStringLiteral("treeView"));
-        treeView->setGeometry(QRect(10, 10, 256, 192));
+        treeWidget = new QTreeWidget(centralWidget);
+        treeWidget->setObjectName(QStringLiteral("treeWidget"));
+        treeWidget->setGeometry(QRect(10, 0, 371, 192));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -75,6 +75,11 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
+        QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
+        ___qtreewidgetitem->setText(3, QApplication::translate("MainWindow", "Date Modified", 0));
+        ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "Date Created", 0));
+        ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "Size", 0));
+        ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Filename", 0));
         menuExtract_All->setTitle(QApplication::translate("MainWindow", "Extract All", 0));
     } // retranslateUi
 
