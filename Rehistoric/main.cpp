@@ -88,13 +88,14 @@ int create(QString *files, int numFiles)
     }
     QStringList filesToArchive = patches;
     filesToArchive << files[0];
+    qDebug() << filesToArchive;
     //and add to archive:
     QString archive = createArchive("hist", filesToArchive);
     qDebug() << archive;
 
     //then remove patches (temp files) now that we're done
     deletePatches(patches);
-    //return 0;
+    return 0;
 }
 
 int extract(QString *files)
@@ -132,34 +133,69 @@ int add(QString *files, int numFiles)
     dirList.removeAt(indexdotdot);
     dirList.removeAt(dirList.indexOf("."));
     //list of patches
-    QStringList patchList = dirList.filter("*.patch");
-    QString fileName;
+    QStringList patchList = dirList;//.filter(".patch");
+    QString origFile;
     for (int i = 0; i < dirList.length(); i++)
     {
         QString tmp = dirList[i];
         qDebug() << tmp;
         if (!tmp.endsWith(".patch"))
         {
-            fileName = tmp;
+            origFile = tmp;
         }
     }
-    qDebug() << fileName;
+    qDebug() << origFile;
     //apply all patches in correct order
+    QString fileName = origFile;
+    QString oldWorkDir = QDir().currentPath();
+    QStringList filesToDelete = QStringList();
+    QDir().setCurrent(destination);
     do
     {
         QString patch = findNextFile(fileName, dirList);
         qDebug() << "Found:" << patch << "containing" << fileName;
         QString tmp = patch;
         tmp.remove(fileName).remove(".patch");
-        qDebug() << fileName;
-        QDir().setCurrent(destination);
+        qDebug() << "filename " << fileName;
         applyPatch(patch, tmp);
+        filesToDelete << tmp;
         fileName = tmp;
         //QDir().rename(patch, destination2 + dirSep + patch.split(dirSep).last());
+        qDebug() << "findNext " << findNextFile(fileName,dirList);
     } while (!findNextFile(fileName,dirList).isEmpty());
 
+    qDebug() << "done patching, final file" << fileName;
+    qDebug() << "current patchList: " << patchList;
 
-    //diff with new file(s), save only diffs and original file and compress
+    QString prevFile = fileName;
+    for (int i = 0; i < numFiles; i++)
+    {
+        if (!files[i].endsWith(rehistoricArchiveExtension) && !QFile::exists(destination + dirSep + files[i])) {
+
+                QString newFile = oldWorkDir + dirSep + files[i];
+                QString patchname = createPatch(prevFile, newFile);
+                prevFile = files[i];
+                patchList << patchname;
+
+        }
+    }
+    qDebug() << patchList;
+
+    QStringList filesToArchive = patchList;
+    filesToArchive << origFile;
+    qDebug() << filesToArchive;
+    createArchive("hist", filesToArchive);
+    QString destArchive = oldWorkDir + dirSep + "hist." + rehistoricArchiveExtension;
+    qDebug() << destArchive;
+    if (QFile::exists(destArchive))
+    {
+       QFile::remove(destArchive);
+    }
+    QDir().rename("hist."+rehistoricArchiveExtension, destArchive);
+    QDir(destination).removeRecursively();
+    QDir().setCurrent(oldWorkDir);
+    deletePatches(filesToDelete << origFile);
+    qDebug() << filesToDelete;
     return 0;
 }
 //find next patch file
