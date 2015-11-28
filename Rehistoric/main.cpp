@@ -7,10 +7,9 @@
 #include <QDateTime>
 
 int create(QString *files, int numFiles);
-
-int extract(QString files);
+int extract(QString *files, int numFiles);
 void extract2(QStringList selected);
-int extractAll(QString *files);
+int extractAll(QString file);
 
 int add(QString *files, int numFiles);
 QString findNextFile(QString currentFileName, QStringList dirList);
@@ -76,7 +75,11 @@ int main(int argc, char *argv[])
         }
         else if (mode == "extract")
         {
-            extract(*files);
+            extract(files, numFiles);
+        }
+        else if (mode == "extractAll")
+        {
+            extractAll(files[0]);
         }
 
     }
@@ -91,14 +94,36 @@ int main(int argc, char *argv[])
 int create(QString *files, int numFiles)
 {
     qDebug() << "creating";
+    //putting files into a map with date as key
+    QMap<QDateTime,QString> datemap;
+    for (int i = 0; i < numFiles; i++)
+    {
+        QFile oldFile(files[i]);
+        QFileInfo fileInfo; fileInfo.setFile(oldFile);
+        QDateTime modified = fileInfo.lastModified();
+        datemap.insert(modified, files[i]);
+    }
     // create patches
     QStringList patches = QStringList();
-    for (int i = 1; i < numFiles; i++)
+    QMap<QDateTime, QString>::iterator i;
+    QString prevFile;
+    for (i = datemap.begin(); i != datemap.end(); i++)
     {
-        QString patchname = createPatch(files[i-1], files[i]);
-        qDebug() << patchname;
-        patches << patchname;
+        if (!prevFile.isEmpty())
+        {
+            QString patchname = createPatch(prevFile, i.value());
+            qDebug() << patchname;
+            patches << patchname;
+        }
+        qDebug() << i.key().toString("yyyy.M.d.h:m") << i.value();
+        prevFile = i.value();
     }
+//    for (int i = 1; i < numFiles; i++)
+//    {
+//        QString patchname = createPatch(files[i-1], files[i]);
+//        qDebug() << patchname;
+//        patches << patchname;
+//    }
     QStringList filesToArchive = patches;
     filesToArchive << files[0];
     qDebug() << filesToArchive;
@@ -110,10 +135,75 @@ int create(QString *files, int numFiles)
     deletePatches(patches);
     return 0;
 }
-
-int extract(QString files)
+int extract(QString *files, int numFiles)
 {
-    qDebug() << files;
+    QString archive = "hist.zip";
+    QString destination = tmpDir + dirSep + archive;
+    if (!QDir(destination).exists())
+    {
+        QDir().mkdir(destination);
+    }
+    extractArchive(files[0], destination);
+
+    //check all extracted files for the file to be patched
+    QStringList dirList = QDir(destination).entryList();
+    //removing . and .. entries in dir listing
+    dirList.removeAt(dirList.indexOf(".."));
+    dirList.removeAt(dirList.indexOf("."));
+
+    QString origFile; // finding file that patches are applied to
+    for (int i = 0; i < dirList.length(); i++)
+    {
+        QString tmp = dirList[i];
+        qDebug() << tmp;
+        if (!tmp.endsWith(".patch")) //all other files assumed to be patches
+        {
+            origFile = tmp;
+        }
+    }
+    qDebug() << origFile;
+    //apply all patches in correct order
+    QString fileName = origFile;
+    QString oldWorkDir = QDir().currentPath();
+    QStringList filesToDelete = QStringList();
+    QDir().setCurrent(destination);
+    bool allCreated;
+    do
+    {
+        QString patch = findNextFile(fileName, dirList);
+        qDebug() << "Found:" << patch << "containing" << fileName;
+        QString tmp = patch;
+        tmp.remove(fileName).remove(".patch");
+        qDebug() << "filename " << fileName;
+        applyPatch(patch, tmp);
+        filesToDelete << tmp;
+        fileName = tmp;
+        qDebug() << "findNext " << findNextFile(fileName,dirList);
+        allCreated = true;
+        for (int i = 1; i < numFiles; i++)
+        {
+            qDebug() << "allCreated: " << files[i] << " " << !QFile::exists(files[i]);
+            if (!QFile::exists(files[i]))
+            {
+                allCreated = false;
+                break;
+            }
+        }
+
+    } while (!findNextFile(fileName,dirList).isEmpty() && !allCreated);
+
+    for (int i = 1; i < numFiles; i++)
+    {
+        qDebug() << "copying back " << files[i];
+        if (QFile::exists(files[i]))
+        {
+            QDir().rename(files[i], oldWorkDir + dirSep + files[i]);
+        }
+    }
+
+    QDir().setCurrent(oldWorkDir);
+    QDir(destination).removeRecursively();
+
     return 0;
 }
 
@@ -124,10 +214,62 @@ void extract2(QStringList selected)
     //w->ui->treeWidget->selectedItems().
     //return 0;
 }
-int extractAll(QString *files)
-{
 
-    return 0;
+int extractAll(QString file)
+{
+    QString destination = tmpDir + dirSep + file;
+    if (!QDir(destination).exists())
+    {
+        QDir().mkdir(destination);
+    }
+    else
+    {
+        qDebug() << " better clean up!";
+    }
+    extractArchive(file, destination);
+
+    //check all extracted files for the file to be patched
+    QStringList dirList = QDir(destination).entryList();
+    //removing . and .. entries in dir listing
+    dirList.removeAt(dirList.indexOf(".."));
+    dirList.removeAt(dirList.indexOf("."));
+
+    QString origFile; // finding file that patches are applied to
+    for (int i = 0; i < dirList.length(); i++)
+    {
+        QString tmp = dirList[i];
+        qDebug() << tmp;
+        if (!tmp.endsWith(".patch"))
+        {
+            origFile = tmp; // there must be one
+        }
+    }
+    qDebug() << origFile;
+    //apply all patches in correct order
+    QString fileName = origFile;
+    QString oldWorkDir = QDir().currentPath();
+    QStringList actualFilesToCopy = QStringList(); //the files the user wants
+    QDir().setCurrent(destination);
+    do
+    {
+        QString patch = findNextFile(fileName, dirList);
+        qDebug() << "Found:" << patch << "containing" << fileName;
+        QString tmp = patch;
+        tmp.remove(fileName).remove(".patch");
+        qDebug() << "filename " << fileName;
+        applyPatch(patch, tmp);
+        actualFilesToCopy << tmp;
+        fileName = tmp;
+        qDebug() << "findNext " << findNextFile(fileName,dirList);
+    } while (!findNextFile(fileName,dirList).isEmpty());
+    actualFilesToCopy << origFile;
+    for (int i = 0; i < actualFilesToCopy.length(); i++)
+    {
+        QDir().rename(actualFilesToCopy[i], oldWorkDir + dirSep + actualFilesToCopy[i]);
+    }
+    QDir().setCurrent(oldWorkDir);
+    QDir(destination).removeRecursively();
+    return 0;// maybe void instead?
 }
 
 int add(QString *files, int numFiles)
@@ -147,9 +289,6 @@ int add(QString *files, int numFiles)
     QString destination = tmpDir + dirSep + archive; // temp dir to extract archive to
     qDebug() << destination;
     QDir().mkdir(destination);
-//    QString destination2 = destination + "new"; //temp dir for new archive
-//    qDebug() << destination2;
-//    QDir().mkdir(destination2);
     extractArchive(archive, destination);
 
     //check all extracted files for the file to be patched
@@ -196,8 +335,8 @@ int add(QString *files, int numFiles)
     QString prevFile = fileName;
     for (int i = 0; i < numFiles; i++)
     {
-        if (!files[i].endsWith(rehistoricArchiveExtension) && !QFile::exists(destination + dirSep + files[i])) {
-
+        if (!files[i].endsWith(rehistoricArchiveExtension) && !QFile::exists(destination + dirSep + files[i]))
+        {
                 QString newFile = oldWorkDir + dirSep + files[i];
                 QString patchname = createPatch(prevFile, newFile);
                 prevFile = files[i];
