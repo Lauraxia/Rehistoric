@@ -4,12 +4,13 @@
 #include <configuration.h>
 #include <systemcalls.h>
 #include <QDir>
+#include <QDateTime>
 
 int create(QString *files, int numFiles);
 int extract(QString *files);
 int add(QString *files, int numFiles);
 QString findNextFile(QString currentFileName, QStringList dirList);
-int view(QString file);
+int view(QString file, MainWindow *w);
 
 int main(int argc, char *argv[])
 {
@@ -30,9 +31,11 @@ int main(int argc, char *argv[])
     {
         //only 1 arg, so it must be the .hist file, which should be viewed:
         QString file = argv[1];
-        view(file);
         MainWindow w;
         w.show();
+        view(file, &w);
+        qDebug() << "2 params!";
+        return a.exec();
     }
     else
     {
@@ -67,13 +70,14 @@ int main(int argc, char *argv[])
         }
 
 
-    }
 
+    }
     MainWindow w;
     w.show();
-    w.addFile();
+    //w.addFile();
+
     qDebug() << "shown window";
-    return a.exec();
+        return a.exec();
 }
 int create(QString *files, int numFiles)
 {
@@ -178,9 +182,10 @@ QString findNextFile(QString currentFileName, QStringList dirList)
     return "";
 }
 
-int view(QString file)
+int view(QString file, MainWindow *w)
 {
-
+    //extract info from hist...
+    w->addFile(QString("test"), QString("test2"), QDateTime::currentDateTime(), QDateTime::currentDateTime());
     return 0;
 }
 

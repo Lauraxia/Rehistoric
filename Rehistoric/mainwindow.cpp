@@ -4,6 +4,7 @@
 #include <QTreeView>
 #include <QDebug>
 #include <QTreeWidgetItem>
+#include <QDateTime>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -22,14 +23,20 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::addFile()
+void MainWindow::addFile(QString name, QString size, QDateTime dateCreated, QDateTime dateModified)
 {
         //QTreeView tree = ui->treeView;
     QStringList list;
-    list.append("test");
-    list.append("test2");
-    list.append("test3");
-    list.append("test4");
+    list.append(name);
+    list.append(size);
+    list.append(dateCreated.toString());
+    list.append(dateModified.toString());
+
+
+//    list.append("test");
+//    list.append("test2");
+//    list.append("test3");
+//    list.append("test4");
     QTreeWidgetItem *test = new QTreeWidgetItem(list);
 ui->treeWidget->addTopLevelItem(test);
    /* ui->treeView->setModel(new QDirModel());//&model);
