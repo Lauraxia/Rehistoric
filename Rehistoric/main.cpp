@@ -8,6 +8,7 @@
 
 int create(QString *files, int numFiles);
 int extract(QString *files);
+int extractAll(QString *files);
 int add(QString *files, int numFiles);
 QString findNextFile(QString currentFileName, QStringList dirList);
 int view(QString file, MainWindow *w);
@@ -103,6 +104,12 @@ int create(QString *files, int numFiles)
 }
 
 int extract(QString *files)
+{
+
+    return 0;
+}
+
+int extractAll(QString *files)
 {
 
     return 0;
