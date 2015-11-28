@@ -1,7 +1,9 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QDebug>
+#include <configuration.h>
 #include <systemcalls.h>
+#include <QDir>
 
 int create(QString *files, int numFiles);
 int extract(QString *files);
@@ -83,7 +85,22 @@ int extract(QString *files)
 
 int add(QString *files, int numFiles)
 {
-
+    QString archive;
+    for (int i = 0; i < numFiles; i++)
+    {
+        if (files[i].endsWith(rehistoricArchiveExtension))
+        {
+            archive = files[i];
+            break;
+        }
+    }
+    QString destination = tmpDir + "/" + archive;
+    QDir().mkdir(destination);
+    extractArchive(archive, destination);
+    //use QDirIterator
+    //match with startswith filename of included file
+    //patch it, match on resulting and so on until last file
+    //then diff with new file(s), save only diffs and original file and compress
     return 0;
 }
 int view(QString file)
