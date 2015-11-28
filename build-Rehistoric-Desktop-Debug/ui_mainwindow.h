@@ -13,9 +13,11 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QColumnView>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
@@ -28,7 +30,9 @@ class Ui_MainWindow
 public:
     QWidget *centralWidget;
     QLabel *label;
+    QColumnView *columnView;
     QMenuBar *menuBar;
+    QMenu *menuExtract_All;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -42,10 +46,15 @@ public:
         label = new QLabel(centralWidget);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(130, 80, 57, 15));
+        columnView = new QColumnView(centralWidget);
+        columnView->setObjectName(QStringLiteral("columnView"));
+        columnView->setGeometry(QRect(20, 10, 341, 201));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 400, 20));
+        menuExtract_All = new QMenu(menuBar);
+        menuExtract_All->setObjectName(QStringLiteral("menuExtract_All"));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -53,6 +62,9 @@ public:
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
+
+        menuBar->addAction(menuExtract_All->menuAction());
+        mainToolBar->addSeparator();
 
         retranslateUi(MainWindow);
 
@@ -63,6 +75,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         label->setText(QApplication::translate("MainWindow", "TextLabel", 0));
+        menuExtract_All->setTitle(QApplication::translate("MainWindow", "Extract All", 0));
     } // retranslateUi
 
 };

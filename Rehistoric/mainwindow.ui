@@ -27,6 +27,16 @@
      <string>TextLabel</string>
     </property>
    </widget>
+   <widget class="QColumnView" name="columnView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>341</width>
+      <height>201</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -37,6 +47,12 @@
      <height>20</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuExtract_All">
+    <property name="title">
+     <string>Extract All</string>
+    </property>
+   </widget>
+   <addaction name="menuExtract_All"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -45,6 +61,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
  </widget>
