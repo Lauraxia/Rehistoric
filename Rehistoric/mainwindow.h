@@ -14,7 +14,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void addFile();
+    void addFile(QString name, QString size, QDateTime dateModified, QDateTime dateCreated);
 
 private:
     Ui::MainWindow *ui;

@@ -61,3 +61,8 @@ Makefile*
 #QtCtreator Qml
 *.qmlproject.user
 *.qmlproject.user.*
+
+
+#other
+*.hist
+*.zip
