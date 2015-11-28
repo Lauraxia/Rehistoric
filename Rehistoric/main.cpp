@@ -82,14 +82,36 @@ int main(int argc, char *argv[])
 int create(QString *files, int numFiles)
 {
     qDebug() << "creating";
+    //putting files into a map with date as key
+    QMap<QDateTime,QString> datemap;
+    for (int i = 0; i < numFiles; i++)
+    {
+        QFile oldFile(files[i]);
+        QFileInfo fileInfo; fileInfo.setFile(oldFile);
+        QDateTime modified = fileInfo.lastModified();
+        datemap.insert(modified, files[i]);
+    }
     // create patches
     QStringList patches = QStringList();
-    for (int i = 1; i < numFiles; i++)
+    QMap<QDateTime, QString>::iterator i;
+    QString prevFile;
+    for (i = datemap.begin(); i != datemap.end(); i++)
     {
-        QString patchname = createPatch(files[i-1], files[i]);
-        qDebug() << patchname;
-        patches << patchname;
+        if (!prevFile.isEmpty())
+        {
+            QString patchname = createPatch(prevFile, i.value());
+            qDebug() << patchname;
+            patches << patchname;
+        }
+        qDebug() << i.key().toString("yyyy.M.d.h:m") << i.value();
+        prevFile = i.value();
     }
+//    for (int i = 1; i < numFiles; i++)
+//    {
+//        QString patchname = createPatch(files[i-1], files[i]);
+//        qDebug() << patchname;
+//        patches << patchname;
+//    }
     QStringList filesToArchive = patches;
     filesToArchive << files[0];
     qDebug() << filesToArchive;
