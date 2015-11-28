@@ -46,9 +46,11 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../Rehistoric/main.cpp \
-		../Rehistoric/mainwindow.cpp moc_mainwindow.cpp
+		../Rehistoric/mainwindow.cpp \
+		../Rehistoric/systemcalls.cpp moc_mainwindow.cpp
 OBJECTS       = main.o \
 		mainwindow.o \
+		systemcalls.o \
 		moc_mainwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/shell-unix.conf \
@@ -281,7 +283,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/Rehistoric1.0.0 || mkdir -p .tmp/Rehistoric1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/Rehistoric1.0.0/ && $(COPY_FILE) --parents ../Rehistoric/mainwindow.h .tmp/Rehistoric1.0.0/ && $(COPY_FILE) --parents ../Rehistoric/main.cpp ../Rehistoric/mainwindow.cpp .tmp/Rehistoric1.0.0/ && $(COPY_FILE) --parents ../Rehistoric/mainwindow.ui .tmp/Rehistoric1.0.0/ && (cd `dirname .tmp/Rehistoric1.0.0` && $(TAR) Rehistoric1.0.0.tar Rehistoric1.0.0 && $(COMPRESS) Rehistoric1.0.0.tar) && $(MOVE) `dirname .tmp/Rehistoric1.0.0`/Rehistoric1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/Rehistoric1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/Rehistoric1.0.0/ && $(COPY_FILE) --parents ../Rehistoric/mainwindow.h ../Rehistoric/configuration.h ../Rehistoric/systemcalls.h .tmp/Rehistoric1.0.0/ && $(COPY_FILE) --parents ../Rehistoric/main.cpp ../Rehistoric/mainwindow.cpp ../Rehistoric/systemcalls.cpp .tmp/Rehistoric1.0.0/ && $(COPY_FILE) --parents ../Rehistoric/mainwindow.ui .tmp/Rehistoric1.0.0/ && (cd `dirname .tmp/Rehistoric1.0.0` && $(TAR) Rehistoric1.0.0.tar Rehistoric1.0.0 && $(COMPRESS) Rehistoric1.0.0.tar) && $(MOVE) `dirname .tmp/Rehistoric1.0.0`/Rehistoric1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/Rehistoric1.0.0
 
 
 clean:compiler_clean 
@@ -672,8 +674,125 @@ mainwindow.o: ../Rehistoric/mainwindow.cpp ../Rehistoric/mainwindow.h \
 		/usr/include/qt5/QtGui/qtouchdevice.h \
 		/usr/include/qt5/QtWidgets/qtabwidget.h \
 		/usr/include/qt5/QtGui/qicon.h \
-		ui_mainwindow.h
+		ui_mainwindow.h \
+		/usr/include/qt5/QtCore/QVariant \
+		/usr/include/qt5/QtWidgets/QAction \
+		/usr/include/qt5/QtWidgets/qaction.h \
+		/usr/include/qt5/QtWidgets/qactiongroup.h \
+		/usr/include/qt5/QtWidgets/QApplication \
+		/usr/include/qt5/QtWidgets/qapplication.h \
+		/usr/include/qt5/QtCore/qcoreapplication.h \
+		/usr/include/qt5/QtCore/qeventloop.h \
+		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
+		/usr/include/qt5/QtGui/qguiapplication.h \
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtWidgets/QButtonGroup \
+		/usr/include/qt5/QtWidgets/qbuttongroup.h \
+		/usr/include/qt5/QtWidgets/QHeaderView \
+		/usr/include/qt5/QtWidgets/qheaderview.h \
+		/usr/include/qt5/QtWidgets/qabstractitemview.h \
+		/usr/include/qt5/QtWidgets/qabstractscrollarea.h \
+		/usr/include/qt5/QtWidgets/qframe.h \
+		/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		/usr/include/qt5/QtCore/qitemselectionmodel.h \
+		/usr/include/qt5/QtWidgets/qabstractitemdelegate.h \
+		/usr/include/qt5/QtWidgets/qstyleoption.h \
+		/usr/include/qt5/QtWidgets/qabstractspinbox.h \
+		/usr/include/qt5/QtGui/qvalidator.h \
+		/usr/include/qt5/QtCore/qregularexpression.h \
+		/usr/include/qt5/QtWidgets/qslider.h \
+		/usr/include/qt5/QtWidgets/qabstractslider.h \
+		/usr/include/qt5/QtWidgets/qstyle.h \
+		/usr/include/qt5/QtWidgets/qtabbar.h \
+		/usr/include/qt5/QtWidgets/qrubberband.h \
+		/usr/include/qt5/QtWidgets/QLabel \
+		/usr/include/qt5/QtWidgets/qlabel.h \
+		/usr/include/qt5/QtWidgets/QMenuBar \
+		/usr/include/qt5/QtWidgets/qmenubar.h \
+		/usr/include/qt5/QtWidgets/qmenu.h \
+		/usr/include/qt5/QtWidgets/QStatusBar \
+		/usr/include/qt5/QtWidgets/qstatusbar.h \
+		/usr/include/qt5/QtWidgets/QToolBar \
+		/usr/include/qt5/QtWidgets/qtoolbar.h \
+		/usr/include/qt5/QtWidgets/QWidget
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Rehistoric/mainwindow.cpp
+
+systemcalls.o: ../Rehistoric/systemcalls.cpp /usr/include/qt5/QtCore/QDebug \
+		/usr/include/qt5/QtCore/qdebug.h \
+		/usr/include/qt5/QtCore/qalgorithms.h \
+		/usr/include/qt5/QtCore/qglobal.h \
+		/usr/include/qt5/QtCore/qconfig.h \
+		/usr/include/qt5/QtCore/qfeatures.h \
+		/usr/include/qt5/QtCore/qsystemdetection.h \
+		/usr/include/qt5/QtCore/qprocessordetection.h \
+		/usr/include/qt5/QtCore/qcompilerdetection.h \
+		/usr/include/qt5/QtCore/qglobalstatic.h \
+		/usr/include/qt5/QtCore/qatomic.h \
+		/usr/include/qt5/QtCore/qbasicatomic.h \
+		/usr/include/qt5/QtCore/qatomic_bootstrap.h \
+		/usr/include/qt5/QtCore/qgenericatomic.h \
+		/usr/include/qt5/QtCore/qatomic_msvc.h \
+		/usr/include/qt5/QtCore/qatomic_integrity.h \
+		/usr/include/qt5/QtCore/qoldbasicatomic.h \
+		/usr/include/qt5/QtCore/qatomic_vxworks.h \
+		/usr/include/qt5/QtCore/qatomic_power.h \
+		/usr/include/qt5/QtCore/qatomic_alpha.h \
+		/usr/include/qt5/QtCore/qatomic_armv7.h \
+		/usr/include/qt5/QtCore/qatomic_armv6.h \
+		/usr/include/qt5/QtCore/qatomic_armv5.h \
+		/usr/include/qt5/QtCore/qatomic_bfin.h \
+		/usr/include/qt5/QtCore/qatomic_ia64.h \
+		/usr/include/qt5/QtCore/qatomic_mips.h \
+		/usr/include/qt5/QtCore/qatomic_s390.h \
+		/usr/include/qt5/QtCore/qatomic_sh4a.h \
+		/usr/include/qt5/QtCore/qatomic_sparc.h \
+		/usr/include/qt5/QtCore/qatomic_gcc.h \
+		/usr/include/qt5/QtCore/qatomic_x86.h \
+		/usr/include/qt5/QtCore/qatomic_cxx11.h \
+		/usr/include/qt5/QtCore/qatomic_unix.h \
+		/usr/include/qt5/QtCore/qmutex.h \
+		/usr/include/qt5/QtCore/qlogging.h \
+		/usr/include/qt5/QtCore/qflags.h \
+		/usr/include/qt5/QtCore/qtypeinfo.h \
+		/usr/include/qt5/QtCore/qtypetraits.h \
+		/usr/include/qt5/QtCore/qsysinfo.h \
+		/usr/include/qt5/QtCore/qhash.h \
+		/usr/include/qt5/QtCore/qchar.h \
+		/usr/include/qt5/QtCore/qiterator.h \
+		/usr/include/qt5/QtCore/qlist.h \
+		/usr/include/qt5/QtCore/qrefcount.h \
+		/usr/include/qt5/QtCore/qpair.h \
+		/usr/include/qt5/QtCore/qmap.h \
+		/usr/include/qt5/QtCore/qtextstream.h \
+		/usr/include/qt5/QtCore/qiodevice.h \
+		/usr/include/qt5/QtCore/qobject.h \
+		/usr/include/qt5/QtCore/qobjectdefs.h \
+		/usr/include/qt5/QtCore/qnamespace.h \
+		/usr/include/qt5/QtCore/qobjectdefs_impl.h \
+		/usr/include/qt5/QtCore/qstring.h \
+		/usr/include/qt5/QtCore/qbytearray.h \
+		/usr/include/qt5/QtCore/qarraydata.h \
+		/usr/include/qt5/QtCore/qstringbuilder.h \
+		/usr/include/qt5/QtCore/qcoreevent.h \
+		/usr/include/qt5/QtCore/qscopedpointer.h \
+		/usr/include/qt5/QtCore/qmetatype.h \
+		/usr/include/qt5/QtCore/qvarlengtharray.h \
+		/usr/include/qt5/QtCore/qcontainerfwd.h \
+		/usr/include/qt5/QtCore/qisenum.h \
+		/usr/include/qt5/QtCore/qobject_impl.h \
+		/usr/include/qt5/QtCore/qlocale.h \
+		/usr/include/qt5/QtCore/qvariant.h \
+		/usr/include/qt5/QtCore/qstringlist.h \
+		/usr/include/qt5/QtCore/qdatastream.h \
+		/usr/include/qt5/QtCore/qregexp.h \
+		/usr/include/qt5/QtCore/qstringmatcher.h \
+		/usr/include/qt5/QtCore/qshareddata.h \
+		/usr/include/qt5/QtCore/qvector.h \
+		/usr/include/qt5/QtCore/qpoint.h \
+		/usr/include/qt5/QtCore/qset.h \
+		/usr/include/qt5/QtCore/qcontiguouscache.h \
+		../Rehistoric/configuration.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o systemcalls.o ../Rehistoric/systemcalls.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_mainwindow.o moc_mainwindow.cpp

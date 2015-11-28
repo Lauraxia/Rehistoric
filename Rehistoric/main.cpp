@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QDebug>
+#include <configuration.h>
 
 int create(QString *files, int numFiles);
 int extract(QString *files);
@@ -11,7 +12,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    if (argc == 1)
+    if (argc == 1) // no arg, only prog name
+    {
+        qDebug() << "What are you doing?";
+    }
+    else if (argc == 2)
     {
         //only 1 arg, so it must be the .hist file, which should be viewed:
         QString file = argv[1];
@@ -56,6 +61,7 @@ int main(int argc, char *argv[])
 int create(QString *files, int numFiles)
 {
     qDebug() << "creating";
+
     return 0;
 }
 
