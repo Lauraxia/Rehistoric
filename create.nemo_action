@@ -1,0 +1,9 @@
+[Nemo Action]
+
+Name = Create
+Comment = Create the archive with these files
+
+Exec = gedit %F
+Selection = m
+Extensions = nodirs;
+
