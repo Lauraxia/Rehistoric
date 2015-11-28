@@ -7,7 +7,7 @@ QString patchName(QString filename1, QString filename2);
 
 void applyPatch(QString patchName, QString outputName);
 
-void createArchive(QString archiveName, QString fileNames);
+QString createArchive(QString archiveName, QStringList fileNames);
 
 void extractArchive(QString archiveName, QString location);
 

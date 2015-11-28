@@ -14,6 +14,7 @@ QString createPatch(QString filename1, QString filename2)
     qDebug() << diffCommand << args << outputName;
 
     process.start(diffCommand, args);
+    process.waitForFinished();
     return outputName;
 }
 
@@ -28,14 +29,17 @@ void applyPatch(QString patchName, QString outputName)
     QStringList args = QStringList() << "-i" << patchName << "-o" << outputName;
     qDebug() << patchCommand << args;
     process.start(patchCommand, args);
+    process.waitForFinished();
 }
 
-void createArchive(QString archiveName, QString fileNames)
+QString createArchive(QString archiveName, QStringList fileNames)
 {
     QProcess process;
     QStringList args = QStringList() << compressArgs << archiveName << fileNames;
     qDebug() << compressCommand << args;
     process.start(compressCommand, args);
+    process.waitForFinished();
+    return archiveName;
 }
 
 void extractArchive(QString archiveName, QString location)
@@ -44,4 +48,5 @@ void extractArchive(QString archiveName, QString location)
     QStringList args = QStringList() << decompressArgs << archiveName << "-d" << location;
     qDebug() << decompressCommand << args;
     process.start(decompressCommand, args);
+    process.waitForFinished();
 }

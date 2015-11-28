@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include <QApplication>
 #include <QDebug>
-#include <configuration.h>
+#include <systemcalls.h>
 
 int create(QString *files, int numFiles);
 int extract(QString *files);
@@ -61,7 +61,17 @@ int main(int argc, char *argv[])
 int create(QString *files, int numFiles)
 {
     qDebug() << "creating";
+    // create patches
+    QStringList patches = QStringList();
+    for (int i = 1; i < numFiles; i++)
+    {
+        QString patchname = createPatch(files[i-1], files[i]);
+        qDebug() << patchname;
+        patches << patchname;
+    }
 
+    QString archive = createArchive("hist", patches << files[0]);
+    qDebug() << archive;
     return 0;
 }
 
