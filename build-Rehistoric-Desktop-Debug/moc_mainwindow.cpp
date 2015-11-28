@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[5];
-    char stringdata[61];
+    QByteArrayData data[11];
+    char stringdata[175];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,10 +33,19 @@ QT_MOC_LITERAL(0, 0, 10),
 QT_MOC_LITERAL(1, 11, 13),
 QT_MOC_LITERAL(2, 25, 0),
 QT_MOC_LITERAL(3, 26, 8),
-QT_MOC_LITERAL(4, 35, 24)
+QT_MOC_LITERAL(4, 35, 12),
+QT_MOC_LITERAL(5, 48, 16),
+QT_MOC_LITERAL(6, 65, 9),
+QT_MOC_LITERAL(7, 75, 24),
+QT_MOC_LITERAL(8, 100, 20),
+QT_MOC_LITERAL(9, 121, 27),
+QT_MOC_LITERAL(10, 149, 24)
     },
     "MainWindow\0extractButton\0\0selected\0"
-    "on_extractButton_clicked\0"
+    "removeButton\0extractAllButton\0addButton\0"
+    "on_extractButton_clicked\0on_addButton_clicked\0"
+    "on_extractAllButton_clicked\0"
+    "on_removedButton_clicked\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -46,23 +55,35 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       1,       // signalCount
+       4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   24,    2, 0x06,
+       1,    1,   54,    2, 0x06,
+       4,    1,   57,    2, 0x06,
+       5,    1,   60,    2, 0x06,
+       6,    1,   63,    2, 0x06,
 
  // slots: name, argc, parameters, tag, flags
-       4,    0,   27,    2, 0x08,
+       7,    0,   66,    2, 0x08,
+       8,    0,   67,    2, 0x08,
+       9,    0,   68,    2, 0x08,
+      10,    0,   69,    2, 0x08,
 
  // signals: parameters
     QMetaType::Int, QMetaType::QStringList,    3,
+    QMetaType::Int, QMetaType::QStringList,    3,
+    QMetaType::Int, QMetaType::QStringList,    3,
+    QMetaType::Int, QMetaType::QStringList,    3,
 
  // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
 
        0        // eod
@@ -75,7 +96,16 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: { int _r = _t->extractButton((*reinterpret_cast< QStringList(*)>(_a[1])));
             if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
-        case 1: _t->on_extractButton_clicked(); break;
+        case 1: { int _r = _t->removeButton((*reinterpret_cast< QStringList(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+        case 2: { int _r = _t->extractAllButton((*reinterpret_cast< QStringList(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+        case 3: { int _r = _t->addButton((*reinterpret_cast< QStringList(*)>(_a[1])));
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = _r; }  break;
+        case 4: _t->on_extractButton_clicked(); break;
+        case 5: _t->on_addButton_clicked(); break;
+        case 6: _t->on_extractAllButton_clicked(); break;
+        case 7: _t->on_removedButton_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -85,6 +115,24 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
             typedef int (MainWindow::*_t)(QStringList );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MainWindow::extractButton)) {
                 *result = 0;
+            }
+        }
+        {
+            typedef int (MainWindow::*_t)(QStringList );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MainWindow::removeButton)) {
+                *result = 1;
+            }
+        }
+        {
+            typedef int (MainWindow::*_t)(QStringList );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MainWindow::extractAllButton)) {
+                *result = 2;
+            }
+        }
+        {
+            typedef int (MainWindow::*_t)(QStringList );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&MainWindow::addButton)) {
+                *result = 3;
             }
         }
     }
@@ -115,13 +163,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 8;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
+        if (_id < 8)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 2;
+        _id -= 8;
     }
     return _id;
 }
@@ -132,6 +180,33 @@ int MainWindow::extractButton(QStringList _t1)
     int _t0 = int();
     void *_a[] = { const_cast<void*>(reinterpret_cast<const void*>(&_t0)), const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
+    return _t0;
+}
+
+// SIGNAL 1
+int MainWindow::removeButton(QStringList _t1)
+{
+    int _t0 = int();
+    void *_a[] = { const_cast<void*>(reinterpret_cast<const void*>(&_t0)), const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+    return _t0;
+}
+
+// SIGNAL 2
+int MainWindow::extractAllButton(QStringList _t1)
+{
+    int _t0 = int();
+    void *_a[] = { const_cast<void*>(reinterpret_cast<const void*>(&_t0)), const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
+    return _t0;
+}
+
+// SIGNAL 3
+int MainWindow::addButton(QStringList _t1)
+{
+    int _t0 = int();
+    void *_a[] = { const_cast<void*>(reinterpret_cast<const void*>(&_t0)), const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 3, _a);
     return _t0;
 }
 QT_END_MOC_NAMESPACE

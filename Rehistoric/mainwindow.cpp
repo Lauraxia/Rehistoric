@@ -56,6 +56,29 @@ void MainWindow::on_extractButton_clicked()
 {
     emit extractButton(getSelected());//ui->treeWidget->selectedItems());
 }
+void MainWindow::on_addButton_clicked()
+{
+    emit addButton(getSelected());
+}
+void MainWindow::on_extractAllButton_clicked()
+{
+    emit extractAllButton(getSelected());
+}
+void MainWindow::on_removedButton_clicked()
+{
+    emit removeButton(getSelected());
+}
+void MainWindow::remove()
+{
+    QList<QTreeWidgetItem *> itemList;
+    QStringList selectedList;
+    itemList = this->ui->treeWidget->selectedItems();
+    foreach(QTreeWidgetItem *item, itemList)
+    {
+        selectedList.erase();
+    }
+}
+
 QStringList MainWindow::getSelected()
 {
     QList<QTreeWidgetItem *> itemList;
@@ -69,3 +92,8 @@ QStringList MainWindow::getSelected()
     }
     return selectedList;//ui->treeWidget->currentItem()->text(ui->treeWidget->currentColumn());//test;
 }
+
+
+
+
+
