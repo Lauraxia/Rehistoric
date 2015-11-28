@@ -8,6 +8,7 @@
 int create(QString *files, int numFiles);
 int extract(QString *files);
 int add(QString *files, int numFiles);
+QString findNextFile(QString currentFileName, QStringList dirList);
 int view(QString file);
 
 int main(int argc, char *argv[])
@@ -85,6 +86,7 @@ int extract(QString *files)
 
 int add(QString *files, int numFiles)
 {
+    //find the archive filename from the list
     QString archive;
     for (int i = 0; i < numFiles; i++)
     {
@@ -94,15 +96,69 @@ int add(QString *files, int numFiles)
             break;
         }
     }
-    QString destination = tmpDir + "/" + archive;
+    qDebug() << archive;
+    //make subdir in tmpDir and extract archive to it
+    QString destination = tmpDir + dirSep + archive; // temp dir to extract archive to
+    qDebug() << destination;
     QDir().mkdir(destination);
+//    QString destination2 = destination + "new"; //temp dir for new archive
+//    qDebug() << destination2;
+//    QDir().mkdir(destination2);
     extractArchive(archive, destination);
-    //use QDirIterator
-    //match with startswith filename of included file
-    //patch it, match on resulting and so on until last file
-    //then diff with new file(s), save only diffs and original file and compress
+
+    //check all extracted files for the file to be patched
+    QStringList dirList = QDir(destination).entryList();
+    //removing . and .. entries in dir listing
+    int indexdotdot = dirList.indexOf("..");
+    dirList.removeAt(indexdotdot);
+    dirList.removeAt(dirList.indexOf("."));
+    //list of patches
+    QStringList patchList = dirList.filter("*.patch");
+    QString fileName;
+    for (int i = 0; i < dirList.length(); i++)
+    {
+        QString tmp = dirList[i];
+        qDebug() << tmp;
+        if (!tmp.endsWith(".patch"))
+        {
+            fileName = tmp;
+        }
+    }
+    qDebug() << fileName;
+    //apply all patches in correct order
+    do
+    {
+        QString patch = findNextFile(fileName, dirList);
+        qDebug() << "Found:" << patch << "containing" << fileName;
+        QString tmp = patch;
+        tmp.remove(fileName).remove(".patch");
+        qDebug() << fileName;
+        QDir().setCurrent(destination);
+        applyPatch(patch, tmp);
+        fileName = tmp;
+        //QDir().rename(patch, destination2 + dirSep + patch.split(dirSep).last());
+    } while (!findNextFile(fileName,dirList).isEmpty());
+
+
+    //diff with new file(s), save only diffs and original file and compress
     return 0;
 }
+//find next patch file
+QString findNextFile(QString currentFileName, QStringList dirList)
+{
+    qDebug() << currentFileName;
+    for (int i = 0; i < dirList.length(); i++)
+    {
+        QString tmp = dirList[i];
+        qDebug() << "Comparing:" << tmp << tmp.endsWith(".patch");
+        if (tmp.startsWith(currentFileName) && tmp.endsWith(".patch"))
+        {
+            return tmp;
+        }
+    }
+    return "";
+}
+
 int view(QString file)
 {
 

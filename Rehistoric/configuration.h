@@ -16,4 +16,5 @@ static QString const decompressCommand = "unzip";
 static QString const decompressArgs = "";
 
 static QString const tmpDir = "/tmp";
+static QString const dirSep = "/";
 #endif

@@ -33,6 +33,7 @@ void applyPatch(QString patchName, QString outputName)
     QProcess process;
     QStringList args = QStringList() << "-i" << patchName << "-o" << outputName;
     qDebug() << patchCommand << args;
+//    process.setStandardOutputFile("whatever");
     process.start(patchCommand, args);
     process.waitForFinished();
 }
