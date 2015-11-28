@@ -11,4 +11,6 @@ QString createArchive(QString archiveName, QStringList fileNames);
 
 void extractArchive(QString archiveName, QString location);
 
+int deletePatches(QStringList patches);
+
 #endif // SYSTEMCALLS_H

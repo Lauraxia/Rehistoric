@@ -45,8 +45,8 @@ int main(int argc, char *argv[])
         for (int i=2; i<argc; i++)
         {
             files[i-2] = argv[i];
-            MainWindow w;
-            w.show();
+            //MainWindow w;
+            //w.show();
             qDebug() << files[i-2];
         }
 
@@ -65,11 +65,13 @@ int main(int argc, char *argv[])
             extract(files);
         }
 
-        MainWindow w;
-        w.show();
+
     }
 
-
+    MainWindow w;
+    w.show();
+    w.addFile();
+    qDebug() << "shown window";
     return a.exec();
 }
 int create(QString *files, int numFiles)
@@ -83,9 +85,14 @@ int create(QString *files, int numFiles)
         qDebug() << patchname;
         patches << patchname;
     }
-
-    QString archive = createArchive("hist", patches << files[0]);
+    QStringList filesToArchive = patches;
+    filesToArchive << files[0];
+    //and add to archive:
+    QString archive = createArchive("hist", filesToArchive);
     qDebug() << archive;
+
+    //then remove patches (temp files) now that we're done
+    deletePatches(patches);
     //return 0;
 }
 

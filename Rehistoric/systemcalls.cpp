@@ -22,6 +22,24 @@ QString createPatch(QString filename1, QString filename2)
     process.waitForFinished();
     return outputName;
 }
+int deletePatches(QStringList patches)
+{
+    QProcess process;
+    //QString outputName = patchName(filename1, filename2);
+//    QStringList args = QStringList();
+//    if (diffArgs.length() > 0)
+//    {
+//        args << diffArgs;
+//    }
+//    args << filename1 << filename2;
+    //process.setStandardOutputFile(outputName);
+
+    //qDebug() << diffCommand << args << outputName;
+
+    process.start(rmCommand, patches);
+    process.waitForFinished();
+    return 0;//outputName;
+}
 
 QString patchName(QString filename1, QString filename2)
 {

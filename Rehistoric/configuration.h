@@ -15,5 +15,7 @@ static QString const compressArgs = "-j";
 static QString const decompressCommand = "unzip";
 static QString const decompressArgs = "";
 
+static QString const rmCommand = "rm";
+
 static QString const tmpDir = "/tmp";
 #endif
