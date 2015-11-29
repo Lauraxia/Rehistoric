@@ -5,6 +5,7 @@
 #include <systemcalls.h>
 #include <QDir>
 #include <QDateTime>
+#include<QInputDialog>
 
 
 int create(QString *files, int numFiles);
@@ -147,11 +148,21 @@ int create(QString *files, int numFiles)
     filesToArchive << files[0];
     qDebug() << filesToArchive;
     //and add to archive:
-    QString archive = createArchive("hist", filesToArchive);
+
+
+    //QString archive = createArchive("hist", filesToArchive);
+    QString archive = createArchive(files[0]+".hist", filesToArchive);
     qDebug() << archive;
+
 
     //then remove patches (temp files) now that we're done
     deletePatches(patches);
+    //QDir().rename(files[0] + ".zip" , files[0] + ".hist");
+    for (int i = 0; i < numFiles-1; i++)
+    {
+        qDebug() << files[i];
+        QDir().remove(files[i]);
+    }
     return 0;
 }
 int extract(QString *files, int numFiles)
@@ -236,7 +247,7 @@ int extractSpecific(QString archive, QString file)
     {
         QDir(destination).removeRecursively(); //TODO this is awful, but program will hang if we don't
     }
-    extractArchive(archive, destination);
+    extractArchive(archive.split(dirSep).last(), destination);
 
     //check all extracted files for the file to be patched
     QStringList dirList = QDir(destination).entryList();
@@ -314,7 +325,10 @@ QString getArchiveDestination(QString file)
 
 void extractAll(QString file)
 {
-    QString destination = getArchiveDestination(file);
+
+    QString justName = file.split(dirSep).last();
+
+    QString destination = getArchiveDestination(justName);
     qDebug() << "extractAll to: " << destination;
 
     if (!QDir(destination).exists())
@@ -370,7 +384,7 @@ void extractAll(QString file)
             qDebug() << "file " << actualFilesToCopy[i] << " to be extracted exists already, removing previous copy";
             QDir().remove(oldWorkDir + dirSep + actualFilesToCopy[i]);
         }
-        QDir().rename(actualFilesToCopy[i], oldWorkDir + dirSep + actualFilesToCopy[i]);
+        QFile::copy(actualFilesToCopy[i], oldWorkDir + dirSep + actualFilesToCopy[i]);
     }
     QDir().setCurrent(oldWorkDir);
 
@@ -496,11 +510,10 @@ void listArchive(QString archiveName, MainWindow *w)
 //        qDebug() << lines[i].split(QRegExp("\\s+"));
 
 //    }
-
     extractAll(archiveName);
 
     //this should be where the output is, so list from here...
-    QString destination = getArchiveDestination(archiveName);
+    QString destination = getArchiveDestination(archiveName.split(dirSep).last());
 
     qDebug() << "done extracting";
 //    QString destination = tmpDir + dirSep + archiveName;
