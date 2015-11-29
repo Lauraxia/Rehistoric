@@ -19,6 +19,7 @@ void listArchive(QString archiveName, MainWindow *w);
 void add(QString archive, QString file);
 QString findNextFile(QString currentFileName, QStringList dirList);
 int view(QString file, MainWindow *w);
+QString archiveName;
 
 QString getArchiveDestination(QString file);
 //MainWindow *mainW;
@@ -46,6 +47,8 @@ int main(int argc, char *argv[])
     {
         //only 1 arg, so it must be the .hist file, which should be viewed:
         QString file = argv[1];
+
+        archiveName = file;
 
         w.show();
         //QObject::connect(w, SIGNAL(extractButton()), this, SLOT(extract()));
@@ -314,7 +317,7 @@ void extract2(QStringList selected)
     //w->ui->treeWidget->selectedItems().
     //return 0;
     //TODO: not a good way to do this, but we'll assume only 1 can be selected (true, for now...)
-    extractSpecific("hist.zip", selected[0]); //selected.length());
+    extractSpecific(archiveName, selected[0]); //selected.length());
 }
 
 QString getArchiveDestination(QString file)

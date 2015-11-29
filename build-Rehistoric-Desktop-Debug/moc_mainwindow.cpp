@@ -19,8 +19,8 @@
 
 QT_BEGIN_MOC_NAMESPACE
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[11];
-    char stringdata[175];
+    QByteArrayData data[13];
+    char stringdata[235];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,13 +39,17 @@ QT_MOC_LITERAL(6, 65, 9),
 QT_MOC_LITERAL(7, 75, 24),
 QT_MOC_LITERAL(8, 100, 20),
 QT_MOC_LITERAL(9, 121, 27),
-QT_MOC_LITERAL(10, 149, 24)
+QT_MOC_LITERAL(10, 149, 24),
+QT_MOC_LITERAL(11, 174, 34),
+QT_MOC_LITERAL(12, 209, 24)
     },
     "MainWindow\0extractButton\0\0selected\0"
     "removeButton\0extractAllButton\0addButton\0"
     "on_extractButton_clicked\0on_addButton_clicked\0"
     "on_extractAllButton_clicked\0"
     "on_removedButton_clicked\0"
+    "on_treeWidget_itemSelectionChanged\0"
+    "on_compareButton_clicked\0"
 };
 #undef QT_MOC_LITERAL
 
@@ -55,7 +59,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -63,16 +67,18 @@ static const uint qt_meta_data_MainWindow[] = {
        4,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   54,    2, 0x06,
-       4,    1,   57,    2, 0x06,
-       5,    1,   60,    2, 0x06,
-       6,    1,   63,    2, 0x06,
+       1,    1,   64,    2, 0x06,
+       4,    1,   67,    2, 0x06,
+       5,    1,   70,    2, 0x06,
+       6,    1,   73,    2, 0x06,
 
  // slots: name, argc, parameters, tag, flags
-       7,    0,   66,    2, 0x08,
-       8,    0,   67,    2, 0x08,
-       9,    0,   68,    2, 0x08,
-      10,    0,   69,    2, 0x08,
+       7,    0,   76,    2, 0x08,
+       8,    0,   77,    2, 0x08,
+       9,    0,   78,    2, 0x08,
+      10,    0,   79,    2, 0x08,
+      11,    0,   80,    2, 0x08,
+      12,    0,   81,    2, 0x08,
 
  // signals: parameters
     QMetaType::Int, QMetaType::QStringList,    3,
@@ -81,6 +87,8 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Int, QMetaType::QStringList,    3,
 
  // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -106,6 +114,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 5: _t->on_addButton_clicked(); break;
         case 6: _t->on_extractAllButton_clicked(); break;
         case 7: _t->on_removedButton_clicked(); break;
+        case 8: _t->on_treeWidget_itemSelectionChanged(); break;
+        case 9: _t->on_compareButton_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -163,13 +173,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 8)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 8;
+        _id -= 10;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 8)
+        if (_id < 10)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 8;
+        _id -= 10;
     }
     return _id;
 }
