@@ -559,7 +559,15 @@ main.o: ../Rehistoric/main.cpp ../Rehistoric/mainwindow.h \
 		/usr/include/qt5/QtCore/qeventloop.h \
 		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
 		/usr/include/qt5/QtGui/qguiapplication.h \
-		/usr/include/qt5/QtGui/qinputmethod.h
+		/usr/include/qt5/QtGui/qinputmethod.h \
+		/usr/include/qt5/QtCore/QDebug \
+		../Rehistoric/configuration.h \
+		../Rehistoric/systemcalls.h \
+		/usr/include/qt5/QtCore/QDir \
+		/usr/include/qt5/QtCore/qdir.h \
+		/usr/include/qt5/QtCore/qfileinfo.h \
+		/usr/include/qt5/QtCore/QDateTime \
+		/usr/include/qt5/QtCore/qdatetime.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../Rehistoric/main.cpp
 
 mainwindow.o: ../Rehistoric/mainwindow.cpp ../Rehistoric/mainwindow.h \
@@ -675,25 +683,17 @@ mainwindow.o: ../Rehistoric/mainwindow.cpp ../Rehistoric/mainwindow.h \
 		/usr/include/qt5/QtWidgets/qtabwidget.h \
 		/usr/include/qt5/QtGui/qicon.h \
 		ui_mainwindow.h \
-		/usr/include/qt5/QtCore/QVariant \
-		/usr/include/qt5/QtWidgets/QAction \
-		/usr/include/qt5/QtWidgets/qaction.h \
-		/usr/include/qt5/QtWidgets/qactiongroup.h \
-		/usr/include/qt5/QtWidgets/QApplication \
-		/usr/include/qt5/QtWidgets/qapplication.h \
-		/usr/include/qt5/QtCore/qcoreapplication.h \
-		/usr/include/qt5/QtCore/qeventloop.h \
-		/usr/include/qt5/QtWidgets/qdesktopwidget.h \
-		/usr/include/qt5/QtGui/qguiapplication.h \
-		/usr/include/qt5/QtGui/qinputmethod.h \
-		/usr/include/qt5/QtWidgets/QButtonGroup \
-		/usr/include/qt5/QtWidgets/qbuttongroup.h \
-		/usr/include/qt5/QtWidgets/QHeaderView \
-		/usr/include/qt5/QtWidgets/qheaderview.h \
+		/usr/include/qt5/QtWidgets/QDirModel \
+		/usr/include/qt5/QtWidgets/qdirmodel.h \
+		/usr/include/qt5/QtCore/qabstractitemmodel.h \
+		/usr/include/qt5/QtCore/qdir.h \
+		/usr/include/qt5/QtCore/qfileinfo.h \
+		/usr/include/qt5/QtWidgets/qfileiconprovider.h \
+		/usr/include/qt5/QtWidgets/QTreeView \
+		/usr/include/qt5/QtWidgets/qtreeview.h \
 		/usr/include/qt5/QtWidgets/qabstractitemview.h \
 		/usr/include/qt5/QtWidgets/qabstractscrollarea.h \
 		/usr/include/qt5/QtWidgets/qframe.h \
-		/usr/include/qt5/QtCore/qabstractitemmodel.h \
 		/usr/include/qt5/QtCore/qitemselectionmodel.h \
 		/usr/include/qt5/QtWidgets/qabstractitemdelegate.h \
 		/usr/include/qt5/QtWidgets/qstyleoption.h \
@@ -705,16 +705,13 @@ mainwindow.o: ../Rehistoric/mainwindow.cpp ../Rehistoric/mainwindow.h \
 		/usr/include/qt5/QtWidgets/qstyle.h \
 		/usr/include/qt5/QtWidgets/qtabbar.h \
 		/usr/include/qt5/QtWidgets/qrubberband.h \
-		/usr/include/qt5/QtWidgets/QLabel \
-		/usr/include/qt5/QtWidgets/qlabel.h \
-		/usr/include/qt5/QtWidgets/QMenuBar \
-		/usr/include/qt5/QtWidgets/qmenubar.h \
-		/usr/include/qt5/QtWidgets/qmenu.h \
-		/usr/include/qt5/QtWidgets/QStatusBar \
-		/usr/include/qt5/QtWidgets/qstatusbar.h \
-		/usr/include/qt5/QtWidgets/QToolBar \
-		/usr/include/qt5/QtWidgets/qtoolbar.h \
-		/usr/include/qt5/QtWidgets/QWidget
+		/usr/include/qt5/QtCore/QDebug \
+		/usr/include/qt5/QtWidgets/QTreeWidgetItem \
+		/usr/include/qt5/QtWidgets/qtreewidget.h \
+		/usr/include/qt5/QtWidgets/qtreewidgetitemiterator.h \
+		/usr/include/qt5/QtCore/QDateTime \
+		/usr/include/qt5/QtCore/qdatetime.h \
+		/usr/include/qt5/QtCore/QObject
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../Rehistoric/mainwindow.cpp
 
 systemcalls.o: ../Rehistoric/systemcalls.cpp /usr/include/qt5/QtCore/QDebug \
@@ -791,7 +788,11 @@ systemcalls.o: ../Rehistoric/systemcalls.cpp /usr/include/qt5/QtCore/QDebug \
 		/usr/include/qt5/QtCore/qpoint.h \
 		/usr/include/qt5/QtCore/qset.h \
 		/usr/include/qt5/QtCore/qcontiguouscache.h \
-		../Rehistoric/configuration.h
+		/usr/include/qt5/QtCore/QProcess \
+		/usr/include/qt5/QtCore/qprocess.h \
+		/usr/include/qt5/QtCore/QString \
+		../Rehistoric/configuration.h \
+		../Rehistoric/systemcalls.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o systemcalls.o ../Rehistoric/systemcalls.cpp
 
 moc_mainwindow.o: moc_mainwindow.cpp 

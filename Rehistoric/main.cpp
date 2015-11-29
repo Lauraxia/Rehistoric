@@ -8,6 +8,7 @@
 
 int create(QString *files, int numFiles);
 int extract(QString *files, int numFiles);
+int extractSpecific(QString archive, QString file);
 void extract2(QStringList selected);
 int extractAll(QString file);
 void remove(QString archive, QString *files, int numFiles);
@@ -82,7 +83,8 @@ int main(int argc, char *argv[])
         }
         else if (mode == "extract")
         {
-            extract(files, numFiles);
+            //extract(files, numFiles);
+            extractSpecific(files[0], files[1]); //archive, file to extract
         }
         else if (mode == "extractAll")
         {
@@ -217,13 +219,81 @@ int extract(QString *files, int numFiles)
 
     return 0;
 }
+int extractSpecific(QString archive, QString file)
+{
+    QString destination = tmpDir + dirSep + archive;
+    if (!QDir(destination).exists())
+    {
+        QDir().mkdir(destination);
+    }
+    else
+    {
+        QDir(destination).removeRecursively(); //TODO this is awful, but program will hang if we don't
+    }
+    extractArchive(archive, destination);
+
+    //check all extracted files for the file to be patched
+    QStringList dirList = QDir(destination).entryList();
+    //removing . and .. entries in dir listing
+    dirList.removeAt(dirList.indexOf(".."));
+    dirList.removeAt(dirList.indexOf("."));
+
+    QString origFile; // finding file that patches are applied to
+    for (int i = 0; i < dirList.length(); i++)
+    {
+        QString tmp = dirList[i];
+        qDebug() << tmp;
+        if (!tmp.endsWith(".patch")) //all other files assumed to be patches
+        {
+            origFile = tmp;
+        }
+    }
+    qDebug() << origFile;
+    //apply all patches in correct order
+    QString fileName = origFile;
+    QString oldWorkDir = QDir().currentPath();
+    QStringList filesToDelete = QStringList();
+    QDir().setCurrent(destination);
+    //bool allCreated;
+    QString patch = findNextFile(fileName, dirList);
+    while (!patch.isEmpty())
+    {
+        qDebug() << "Found:" << patch << "containing" << fileName;
+        QString tmp = patch;
+        tmp.remove(fileName).remove(".patch");
+        qDebug() << "filename " << fileName;
+        applyPatch(patch, tmp);
+        filesToDelete << tmp;
+        fileName = tmp;
+        qDebug() << "findNext " << findNextFile(fileName,dirList);
+
+patch = findNextFile(fileName, dirList);
+    } // && !allCreated);
+
+        qDebug() << "copying back " << file << oldWorkDir << dirSep << file;
+        qDebug() << "looking in" << tmpDir + dirSep + archive + dirSep + file;
+        if (QFile::exists(tmpDir + dirSep + archive + dirSep + file))
+        {
+            qDebug() << "exists";
+            QDir().rename(tmpDir + dirSep + archive + dirSep + file, oldWorkDir + dirSep + file);
+        }
+
+    QDir().setCurrent(oldWorkDir);
+    QDir(destination).removeRecursively();
+
+    return 0;
+}
+
 
 void extract2(QStringList selected)
 {
     qDebug() << selected;// QString::number(i);//+ mainW->getSelected();
+
     //w.getSelected();
     //w->ui->treeWidget->selectedItems().
     //return 0;
+    //TODO: not a good way to do this, but we'll assume only 1 can be selected (true, for now...)
+    extractSpecific("hist.zip", selected[0]); //selected.length());
 }
 
 QString getArchiveDestination(QString file)
@@ -432,7 +502,7 @@ void listArchive(QString archiveName, MainWindow *w)
     extractAll(archiveName);
 
     //this should be where the output is, so list from here...
-    QString destination = tmpDir + dirSep + archiveName;
+    QString destination = getArchiveDestination(archiveName);
 
     qDebug() << "done extracting";
 //    QString destination = tmpDir + dirSep + archiveName;
