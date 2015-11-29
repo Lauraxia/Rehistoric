@@ -123,7 +123,7 @@ void extract2(QStringList selected)
     //w.getSelected();
     //w->ui->treeWidget->selectedItems().
     //return 0;
-
+}
 int extractAll(QString *files)
 {
 

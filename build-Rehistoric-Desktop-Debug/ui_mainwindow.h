@@ -16,8 +16,6 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QToolBar>
@@ -36,8 +34,6 @@ public:
     QPushButton *extractAllButton;
     QPushButton *addButon;
     QPushButton *removeButton;
-    QMenuBar *menuBar;
-    QMenu *menuExtract_All;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -67,12 +63,6 @@ public:
         removeButton->setObjectName(QStringLiteral("removeButton"));
         removeButton->setGeometry(QRect(290, 200, 80, 23));
         MainWindow->setCentralWidget(centralWidget);
-        menuBar = new QMenuBar(MainWindow);
-        menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 400, 20));
-        menuExtract_All = new QMenu(menuBar);
-        menuExtract_All->setObjectName(QStringLiteral("menuExtract_All"));
-        MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
@@ -80,7 +70,6 @@ public:
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
-        menuBar->addAction(menuExtract_All->menuAction());
         mainToolBar->addSeparator();
 
         retranslateUi(MainWindow);
@@ -101,7 +90,6 @@ public:
         extractAllButton->setText(QApplication::translate("MainWindow", "Extract All", 0));
         addButon->setText(QApplication::translate("MainWindow", "Add", 0));
         removeButton->setText(QApplication::translate("MainWindow", "Remove", 0));
-        menuExtract_All->setTitle(QApplication::translate("MainWindow", "Extract All", 0));
     } // retranslateUi
 
 };
