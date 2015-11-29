@@ -18,6 +18,7 @@ int view(QString file, MainWindow *w);
 
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
     MainWindow w;
 
@@ -42,6 +43,8 @@ int main(int argc, char *argv[])
         //QObject::connect(w, SIGNAL(extractButton()), this, SLOT(extract()));
         QObject::connect(&w, &MainWindow::extractButton, extract2);
 //QObject::connect(w, &QPushButton::clicked, someFunction);
+        QObject::connect(&w,&MainWindow::addButton, add);
+        QObject::connect(&w, &MainWindow::extractAllButton,extractAll);
         view(file, &w);
         qDebug() << "2 params!";
         return a.exec();
@@ -271,6 +274,7 @@ int extractAll(QString file)
     QDir(destination).removeRecursively();
     return 0;// maybe void instead?
 }
+
 
 int add(QString *files, int numFiles)
 {

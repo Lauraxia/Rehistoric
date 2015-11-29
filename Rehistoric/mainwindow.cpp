@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QTreeWidgetItem>
 #include <QDateTime>
+#include<QObject>
+
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -55,14 +57,17 @@ ui->treeWidget->addTopLevelItem(test);
 void MainWindow::on_extractButton_clicked()
 {
     emit extractButton(getSelected());//ui->treeWidget->selectedItems());
+    //connect(extractButton, SIGNAL(clicked()),main, SLOT(extract(getSelected())));
 }
 void MainWindow::on_addButton_clicked()
 {
-    emit addButton(getSelected());
+    emit addButton(add(QString *files));
+    //connect(addButton, SIGNAL(clicked()),main, SLOT(add()))
 }
 void MainWindow::on_extractAllButton_clicked()
 {
     emit extractAllButton(getSelected());
+   // connect(extractAllButton, SIGNAL(clicked()), main, SLOT(extractAll(getSelected())));
 }
 void MainWindow::on_removedButton_clicked()
 {
@@ -70,13 +75,7 @@ void MainWindow::on_removedButton_clicked()
 }
 void MainWindow::remove()
 {
-    QList<QTreeWidgetItem *> itemList;
-    QStringList selectedList;
-    itemList = this->ui->treeWidget->selectedItems();
-    foreach(QTreeWidgetItem *item, itemList)
-    {
-        selectedList.erase();
-    }
+
 }
 
 QStringList MainWindow::getSelected()
@@ -91,6 +90,10 @@ QStringList MainWindow::getSelected()
        selectedList.append(str);
     }
     return selectedList;//ui->treeWidget->currentItem()->text(ui->treeWidget->currentColumn());//test;
+
+
+
+
 }
 
 
