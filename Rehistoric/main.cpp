@@ -8,14 +8,19 @@
 
 int create(QString *files, int numFiles);
 int extract(QString *files, int numFiles);
+void extract2(QStringList selected);
 int extractAll(QString file);
+
 int add(QString *files, int numFiles);
 QString findNextFile(QString currentFileName, QStringList dirList);
 int view(QString file, MainWindow *w);
+//MainWindow *mainW;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    MainWindow w;
+
     for (int j=0; j<argc; j++)
     {
     qDebug() << argv[j];
@@ -24,7 +29,7 @@ int main(int argc, char *argv[])
     if (argc == 1) // no arg, only prog name
     {
         qDebug() << "What are you doing?";
-        MainWindow w;
+
         w.show();
         //return 0;
     }
@@ -32,8 +37,11 @@ int main(int argc, char *argv[])
     {
         //only 1 arg, so it must be the .hist file, which should be viewed:
         QString file = argv[1];
-        MainWindow w;
+
         w.show();
+        //QObject::connect(w, SIGNAL(extractButton()), this, SLOT(extract()));
+        QObject::connect(&w, &MainWindow::extractButton, extract2);
+//QObject::connect(w, &QPushButton::clicked, someFunction);
         view(file, &w);
         qDebug() << "2 params!";
         return a.exec();
@@ -74,15 +82,14 @@ int main(int argc, char *argv[])
             extractAll(files[0]);
         }
 
-
-
     }
-    MainWindow w;
+
     w.show();
+    //mainW = &w;
     //w.addFile();
 
     qDebug() << "shown window";
-        return a.exec();
+    return a.exec();
 }
 int create(QString *files, int numFiles)
 {
@@ -198,6 +205,14 @@ int extract(QString *files, int numFiles)
     QDir(destination).removeRecursively();
 
     return 0;
+}
+
+void extract2(QStringList selected)
+{
+    qDebug() << selected;// QString::number(i);//+ mainW->getSelected();
+    //w.getSelected();
+    //w->ui->treeWidget->selectedItems().
+    //return 0;
 }
 
 int extractAll(QString file)
@@ -367,6 +382,8 @@ QString findNextFile(QString currentFileName, QStringList dirList)
 int view(QString file, MainWindow *w)
 {
     //extract info from hist...
+
+    //then add each file's info:
     w->addFile(QString("test"), QString("test2"), QDateTime::currentDateTime(), QDateTime::currentDateTime());
     return 0;
 }

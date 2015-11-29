@@ -51,3 +51,21 @@ ui->treeWidget->addTopLevelItem(test);
     ui->treeView->resize(640, 480);
     ui->treeView->show();*/
 }
+
+void MainWindow::on_extractButton_clicked()
+{
+    emit extractButton(getSelected());//ui->treeWidget->selectedItems());
+}
+QStringList MainWindow::getSelected()
+{
+    QList<QTreeWidgetItem *> itemList;
+    QStringList selectedList;
+    itemList = this->ui->treeWidget->selectedItems();
+    foreach(QTreeWidgetItem *item, itemList)
+    {
+       //get filename for each selected item
+       QString str = item->text(0);
+       selectedList.append(str);
+    }
+    return selectedList;//ui->treeWidget->currentItem()->text(ui->treeWidget->currentColumn());//test;
+}
