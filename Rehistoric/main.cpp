@@ -310,7 +310,10 @@ QString getArchiveDestination(QString file)
 
 void extractAll(QString file)
 {
-    QString destination = getArchiveDestination(file);
+
+    QString justName = file.split(dirSep).last();
+
+    QString destination = getArchiveDestination(justName);
     qDebug() << "extractAll to: " << destination;
 
     if (!QDir(destination).exists())
@@ -367,7 +370,7 @@ void extractAll(QString file)
             qDebug() << "file " << actualFilesToCopy[i] << " to be extracted exists already, removing previous copy";
             QDir().remove(oldWorkDir + dirSep + actualFilesToCopy[i]);
         }
-        QDir().rename(actualFilesToCopy[i], oldWorkDir + dirSep + actualFilesToCopy[i]);
+        QFile::copy(actualFilesToCopy[i], oldWorkDir + dirSep + actualFilesToCopy[i]);
     }
     QDir().setCurrent(oldWorkDir);
 
@@ -509,11 +512,10 @@ void listArchive(QString archiveName, MainWindow *w)
 //        qDebug() << lines[i].split(QRegExp("\\s+"));
 
 //    }
-
     extractAll(archiveName);
 
     //this should be where the output is, so list from here...
-    QString destination = getArchiveDestination(archiveName);
+    QString destination = getArchiveDestination(archiveName.split(dirSep).last());
 
     qDebug() << "done extracting";
 //    QString destination = tmpDir + dirSep + archiveName;
