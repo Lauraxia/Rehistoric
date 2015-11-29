@@ -29,6 +29,10 @@ private slots:
     void on_removedButton_clicked();
 
 
+    void on_treeWidget_itemSelectionChanged();
+
+    void on_compareButton_clicked();
+
 signals:
     int extractButton(QStringList selected);
     int removeButton(QStringList selected);

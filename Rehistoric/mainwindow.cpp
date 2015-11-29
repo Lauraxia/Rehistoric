@@ -5,8 +5,8 @@
 #include <QDebug>
 #include <QTreeWidgetItem>
 #include <QDateTime>
-#include<QObject>
-
+#include <QObject>
+#include <QProcess>
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
 
 
 
@@ -109,3 +108,28 @@ QStringList MainWindow::getSelected()
 
 
 
+
+void MainWindow::on_treeWidget_itemSelectionChanged()
+{
+    if (ui->treeWidget->selectedItems().count() == 2)
+    {
+        ui->compareButton->setEnabled(true);
+    }
+    else
+    {
+        ui->compareButton->setEnabled(false);
+    }
+
+}
+
+void MainWindow::on_compareButton_clicked()
+{
+    qDebug() << "comparing!";
+    QProcess process;
+    QStringList sel = getSelected();
+    qDebug() << sel;
+    process.start("kdiff3", sel);//(sel[0] + " " + sel[1]));
+
+    process.waitForFinished();
+    //return 0;
+}

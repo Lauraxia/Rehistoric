@@ -36,6 +36,7 @@ public:
     QPushButton *addButon;
     QPushButton *extractButton;
     QPushButton *extractAllButton;
+    QPushButton *compareButton;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
@@ -57,6 +58,7 @@ public:
         sizePolicy.setVerticalStretch(100);
         sizePolicy.setHeightForWidth(treeWidget->sizePolicy().hasHeightForWidth());
         treeWidget->setSizePolicy(sizePolicy);
+        treeWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
         gridLayout->addWidget(treeWidget, 0, 0, 1, 1);
 
@@ -83,6 +85,12 @@ public:
         extractAllButton->setObjectName(QStringLiteral("extractAllButton"));
 
         horizontalLayout->addWidget(extractAllButton);
+
+        compareButton = new QPushButton(centralWidget);
+        compareButton->setObjectName(QStringLiteral("compareButton"));
+        compareButton->setEnabled(false);
+
+        horizontalLayout->addWidget(compareButton);
 
 
         gridLayout->addLayout(horizontalLayout, 1, 0, 1, 1);
@@ -113,6 +121,7 @@ public:
         addButon->setText(QApplication::translate("MainWindow", "Add...", 0));
         extractButton->setText(QApplication::translate("MainWindow", "Extract", 0));
         extractAllButton->setText(QApplication::translate("MainWindow", "Extract All", 0));
+        compareButton->setText(QApplication::translate("MainWindow", "Compare", 0));
     } // retranslateUi
 
 };
