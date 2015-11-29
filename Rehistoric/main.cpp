@@ -108,35 +108,37 @@ int create(QString *files, int numFiles)
 {
     qDebug() << "creating";
     //putting files into a map with date as key
-    QMap<QDateTime,QString> datemap;
-    for (int i = 0; i < numFiles; i++)
-    {
-        QFile oldFile(files[i]);
-        QFileInfo fileInfo; fileInfo.setFile(oldFile);
-        QDateTime modified = fileInfo.lastModified();
-        datemap.insert(modified, files[i]);
-    }
+//    QMap<QDateTime,QString> datemap;
+//    for (int i = 0; i < numFiles; i++)
+//    {
+//        QFile oldFile(files[i]);
+//        QFileInfo fileInfo;
+//        fileInfo.setFile(oldFile);
+//        QDateTime modified = fileInfo.lastModified();
+//        datemap.insert(modified, files[i]);
+//        qDebug() << "inserted " << files[i] << "into datemap";
+//    }
     // create patches
     QStringList patches = QStringList();
-    QMap<QDateTime, QString>::iterator i;
-    QString prevFile;
-    for (i = datemap.begin(); i != datemap.end(); i++)
-    {
-        if (!prevFile.isEmpty())
-        {
-            QString patchname = createPatch(prevFile, i.value());
-            qDebug() << patchname;
-            patches << patchname;
-        }
-        qDebug() << i.key().toString("yyyy.M.d.h:m") << i.value();
-        prevFile = i.value();
-    }
-//    for (int i = 1; i < numFiles; i++)
+//    QMap<QDateTime, QString>::iterator i;
+//    QString prevFile;
+//    for (i = datemap.begin(); i != datemap.end(); i++)
 //    {
-//        QString patchname = createPatch(files[i-1], files[i]);
-//        qDebug() << patchname;
-//        patches << patchname;
+//        qDebug() << i.key().toString("yyyy.M.d.h:m") << i.value();
+//        if (!prevFile.isEmpty())
+//        {
+//            QString patchname = createPatch(prevFile, i.value());
+//            qDebug() << patchname;
+//            patches << patchname;
+//        }
+//        prevFile = i.value();
 //    }
+    for (int i = 1; i < numFiles; i++)
+    {
+        QString patchname = createPatch(files[i-1], files[i]);
+        qDebug() << patchname;
+        patches << patchname;
+    }
     QStringList filesToArchive = patches;
     filesToArchive << files[0];
     qDebug() << filesToArchive;
@@ -275,6 +277,11 @@ patch = findNextFile(fileName, dirList);
         if (QFile::exists(tmpDir + dirSep + archive + dirSep + file))
         {
             qDebug() << "exists";
+            if (QFile::exists(oldWorkDir + dirSep + file))
+            {
+                qDebug() << "file to be extracted exists already, removing previous copy";
+                QDir().remove(oldWorkDir + dirSep + file);
+            }
             QDir().rename(tmpDir + dirSep + archive + dirSep + file, oldWorkDir + dirSep + file);
         }
 
@@ -355,6 +362,11 @@ void extractAll(QString file)
     actualFilesToCopy << origFile;
     for (int i = 0; i < actualFilesToCopy.length(); i++)
     {
+        if (QFile::exists(oldWorkDir + dirSep + actualFilesToCopy[i]))
+        {
+            qDebug() << "file " << actualFilesToCopy[i] << " to be extracted exists already, removing previous copy";
+            QDir().remove(oldWorkDir + dirSep + actualFilesToCopy[i]);
+        }
         QDir().rename(actualFilesToCopy[i], oldWorkDir + dirSep + actualFilesToCopy[i]);
     }
     QDir().setCurrent(oldWorkDir);
@@ -534,6 +546,7 @@ void listArchive(QString archiveName, MainWindow *w)
             //TODO: do we need to track which things we've added? Will this mess up actions based on selection index later?
         }
     }
+    QDir(destination).removeRecursively();
 }
 
 void remove(QString archive, QString *files, int numFiles) {
