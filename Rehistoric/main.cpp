@@ -16,6 +16,8 @@ void listArchive(QString archiveName, MainWindow *w);
 int add(QString *files, int numFiles);
 QString findNextFile(QString currentFileName, QStringList dirList);
 int view(QString file, MainWindow *w);
+
+QString getArchiveDestination(QString file);
 //MainWindow *mainW;
 
 int main(int argc, char *argv[])
@@ -221,9 +223,16 @@ void extract2(QStringList selected)
     //return 0;
 }
 
+QString getArchiveDestination(QString file)
+{
+    return tmpDir + dirSep + file;
+}
+
 int extractAll(QString file)
 {
-    QString destination = tmpDir + dirSep + file;
+    QString destination = getArchiveDestination(file);
+    qDebug() << "extractAll to: " << destination;
+
     if (!QDir(destination).exists())
     {
         QDir().mkdir(destination);
@@ -231,6 +240,8 @@ int extractAll(QString file)
     else
     {
         qDebug() << " better clean up!";
+        //TODO FIX: kind of an awful hack, but preemptively delete any existing contents to avoid conflict:
+        QDir(destination).removeRecursively();
     }
     extractArchive(file, destination);
 
@@ -274,7 +285,10 @@ int extractAll(QString file)
         QDir().rename(actualFilesToCopy[i], oldWorkDir + dirSep + actualFilesToCopy[i]);
     }
     QDir().setCurrent(oldWorkDir);
-    QDir(destination).removeRecursively();
+
+    //TODO FIX: we can't do this here, because sometimes we need to extractAll and then read the contents!
+    //QDir(destination).removeRecursively();
+
     return 0;// maybe void instead?
 }
 
@@ -390,7 +404,7 @@ int view(QString file, MainWindow *w)
     //extract info from hist...
 
     //then add each file's info:
-    w->addFile(QString("test"), QString("test2"), QDateTime::currentDateTime(), QDateTime::currentDateTime());
+    //w->addFile(QString("test"), QString("test2"), QDateTime::currentDateTime(), QDateTime::currentDateTime());
     listArchive(file,w);
     return 0;
 }
@@ -410,13 +424,21 @@ void listArchive(QString archiveName, MainWindow *w)
 //        qDebug() << lines[i].split(QRegExp("\\s+"));
 
 //    }
+
     extractAll(archiveName);
+
+    //this should be where the output is, so list from here...
+    QString destination = tmpDir + dirSep + archiveName;
+
     qDebug() << "done extracting";
 //    QString destination = tmpDir + dirSep + archiveName;
-    QStringList dirList = QDir().entryList();
+    QStringList dirList = QDir(destination).entryList();
+
+    qDebug() << "dirlist is: " << dirList;
     //removing . and .. entries in dir listing
     dirList.removeAt(dirList.indexOf(".."));
     dirList.removeAt(dirList.indexOf("."));
+
 
     for (int i = 0; i < dirList.length(); i++)
     {
@@ -425,14 +447,26 @@ void listArchive(QString archiveName, MainWindow *w)
 
         QFileInfo tmpinfo = QFileInfo(tmp);
         qDebug() << tmpinfo.lastModified() << tmpinfo.size();
-        w->addFile(tmp,QString::number(tmpinfo.size()),tmpinfo.lastModified(),QDateTime::currentDateTime());
+
+        //we don't want to add this if it's a patch and not an actual file:
+        if (tmp.contains(".patch"))
+        {
+            //dirList.removeAt(i);
+            qDebug() << "found patch at " << i << tmp;
+        }
+        else
+        {
+            //add to our file list:
+            w->addFile(tmp,QString::number(tmpinfo.size()),tmpinfo.lastModified(),QDateTime::currentDateTime());
+            //TODO: do we need to track which things we've added? Will this mess up actions based on selection index later?
+        }
     }
 }
 
 void remove(QString archive, QString *files, int numFiles) {
     qDebug() << archive;
     //make subdir in tmpDir and extract archive to it
-    QString destination = tmpDir + dirSep + archive; // temp dir to extract archive to
+    QString destination = getArchiveDestination(archive); // temp dir to extract archive to
     qDebug() << destination;
     QDir().mkdir(destination);
     extractArchive(archive, destination);
@@ -472,6 +506,8 @@ void remove(QString archive, QString *files, int numFiles) {
         filesToDelete << tmp;
         fileName = tmp;
         //QDir().rename(patch, destination2 + dirSep + patch.split(dirSep).last());
+
+        //was fileremoveName(?!)
         qDebug() << "findNext " << findNextFile(fileName,dirList);
     } while (!findNextFile(fileName,dirList).isEmpty());
 
