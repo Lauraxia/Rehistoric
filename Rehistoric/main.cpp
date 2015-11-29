@@ -7,14 +7,18 @@
 #include <QDateTime>
 
 int create(QString *files, int numFiles);
-int extract(QString *files);
+int extract(QString files);
+void extract2(QStringList selected);
 int add(QString *files, int numFiles);
 QString findNextFile(QString currentFileName, QStringList dirList);
 int view(QString file, MainWindow *w);
+//MainWindow *mainW;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    MainWindow w;
+
     for (int j=0; j<argc; j++)
     {
     qDebug() << argv[j];
@@ -23,7 +27,7 @@ int main(int argc, char *argv[])
     if (argc == 1) // no arg, only prog name
     {
         qDebug() << "What are you doing?";
-        MainWindow w;
+
         w.show();
         //return 0;
     }
@@ -31,8 +35,11 @@ int main(int argc, char *argv[])
     {
         //only 1 arg, so it must be the .hist file, which should be viewed:
         QString file = argv[1];
-        MainWindow w;
+
         w.show();
+        //QObject::connect(w, SIGNAL(extractButton()), this, SLOT(extract()));
+        QObject::connect(&w, &MainWindow::extractButton, extract2);
+//QObject::connect(w, &QPushButton::clicked, someFunction);
         view(file, &w);
         qDebug() << "2 params!";
         return a.exec();
@@ -66,18 +73,17 @@ int main(int argc, char *argv[])
         }
         else if (mode == "extract")
         {
-            extract(files);
+            extract(*files);
         }
 
-
-
     }
-    MainWindow w;
+
     w.show();
+    //mainW = &w;
     //w.addFile();
 
     qDebug() << "shown window";
-        return a.exec();
+    return a.exec();
 }
 int create(QString *files, int numFiles)
 {
@@ -101,10 +107,18 @@ int create(QString *files, int numFiles)
     //return 0;
 }
 
-int extract(QString *files)
+int extract(QString files)
 {
-
+    qDebug() << files;
     return 0;
+}
+
+void extract2(QStringList selected)
+{
+    qDebug() << selected;// QString::number(i);//+ mainW->getSelected();
+    //w.getSelected();
+    //w->ui->treeWidget->selectedItems().
+    //return 0;
 }
 
 int add(QString *files, int numFiles)
@@ -185,6 +199,8 @@ QString findNextFile(QString currentFileName, QStringList dirList)
 int view(QString file, MainWindow *w)
 {
     //extract info from hist...
+
+    //then add each file's info:
     w->addFile(QString("test"), QString("test2"), QDateTime::currentDateTime(), QDateTime::currentDateTime());
     return 0;
 }

@@ -16,6 +16,15 @@ public:
     ~MainWindow();
     void addFile(QString name, QString size, QDateTime dateModified, QDateTime dateCreated);
 
+    QStringList getSelected();
+
+private slots:
+    void on_extractButton_clicked();
+
+signals:
+    int extractButton(QStringList selected);
+
+
 private:
     Ui::MainWindow *ui;
 };
