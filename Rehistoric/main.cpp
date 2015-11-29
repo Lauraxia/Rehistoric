@@ -22,6 +22,7 @@ QString getArchiveDestination(QString file);
 
 int main(int argc, char *argv[])
 {
+
     QApplication a(argc, argv);
     MainWindow w;
 
@@ -45,7 +46,9 @@ int main(int argc, char *argv[])
         w.show();
         //QObject::connect(w, SIGNAL(extractButton()), this, SLOT(extract()));
         QObject::connect(&w, &MainWindow::extractButton, extract2);
-//QObject::connect(w, &QPushButton::clicked, someFunction);
+        //QObject::connect(w, &QPushButton::clicked, someFunction);
+        //QObject::connect(&w,&MainWindow::addButton, add); //grab the needed stuff for adding
+        //QObject::connect(&w, &MainWindow::extractAllButton,extractAll);//same as extract but for all the files
         view(file, &w);
         qDebug() << "2 params!";
         return a.exec();
@@ -291,6 +294,7 @@ int extractAll(QString file)
 
     return 0;// maybe void instead?
 }
+
 
 int add(QString *files, int numFiles)
 {

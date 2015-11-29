@@ -5,6 +5,8 @@
 #include <QDebug>
 #include <QTreeWidgetItem>
 #include <QDateTime>
+#include<QObject>
+
 
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -55,7 +57,24 @@ ui->treeWidget->addTopLevelItem(test);
 void MainWindow::on_extractButton_clicked()
 {
     emit extractButton(getSelected());//ui->treeWidget->selectedItems());
+    //connect(extractButton, SIGNAL(clicked()),main, SLOT(extract(getSelected())));
 }
+void MainWindow::on_addButton_clicked()
+{
+    emit addButton(getSelected());
+    //connect(addButton, SIGNAL(clicked()),main, SLOT(add()))
+}
+void MainWindow::on_extractAllButton_clicked()
+{
+    emit extractAllButton(getSelected());
+   // connect(extractAllButton, SIGNAL(clicked()), main, SLOT(extractAll(getSelected())));
+}
+void MainWindow::on_removedButton_clicked()
+{
+    emit removeButton(getSelected());
+}
+
+
 QStringList MainWindow::getSelected()
 {
     QList<QTreeWidgetItem *> itemList;
@@ -68,4 +87,13 @@ QStringList MainWindow::getSelected()
        selectedList.append(str);
     }
     return selectedList;//ui->treeWidget->currentItem()->text(ui->treeWidget->currentColumn());//test;
+
+
+
+
 }
+
+
+
+
+

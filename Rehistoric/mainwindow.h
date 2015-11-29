@@ -17,12 +17,21 @@ public:
     void addFile(QString name, QString size, QDateTime dateModified, QDateTime dateCreated);
 
     QStringList getSelected();
+    QStringList add(QStringList list);
+
 
 private slots:
     void on_extractButton_clicked();
+    void on_addButton_clicked();
+    void on_extractAllButton_clicked();
+    void on_removedButton_clicked();
+
 
 signals:
     int extractButton(QStringList selected);
+    int removeButton(QStringList selected);
+    int extractAllButton(QStringList selected);
+    int addButton(QStringList selected);
 
 
 private:
