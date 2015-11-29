@@ -25,13 +25,12 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::addFile(QString name, QString size, QDateTime dateCreated, QDateTime dateModified)
+void MainWindow::addFile(QString name, QString size, QDateTime dateModified)
 {
         //QTreeView tree = ui->treeView;
     QStringList list;
     list.append(name);
     list.append(size);
-    list.append(dateCreated.toString());
     list.append(dateModified.toString());
 
 

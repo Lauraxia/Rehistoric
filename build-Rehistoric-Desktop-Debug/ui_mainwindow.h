@@ -106,8 +106,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
-        ___qtreewidgetitem->setText(3, QApplication::translate("MainWindow", "Date Modified", 0));
-        ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "Date Created", 0));
+        ___qtreewidgetitem->setText(2, QApplication::translate("MainWindow", "Date Modified", 0));
         ___qtreewidgetitem->setText(1, QApplication::translate("MainWindow", "Size", 0));
         ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Filename", 0));
         removeButton->setText(QApplication::translate("MainWindow", "Remove", 0));

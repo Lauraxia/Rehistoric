@@ -35,11 +35,6 @@
       </column>
       <column>
        <property name="text">
-        <string>Date Created</string>
-       </property>
-      </column>
-      <column>
-       <property name="text">
         <string>Date Modified</string>
        </property>
       </column>
