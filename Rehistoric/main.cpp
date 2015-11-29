@@ -44,9 +44,9 @@ int main(int argc, char *argv[])
         w.show();
         //QObject::connect(w, SIGNAL(extractButton()), this, SLOT(extract()));
         QObject::connect(&w, &MainWindow::extractButton, extract2);
-//QObject::connect(w, &QPushButton::clicked, someFunction);
-        QObject::connect(&w,&MainWindow::addButton, add);
-        QObject::connect(&w, &MainWindow::extractAllButton,extractAll);
+        //QObject::connect(w, &QPushButton::clicked, someFunction);
+        //QObject::connect(&w,&MainWindow::addButton, add); //grab the needed stuff for adding
+        //QObject::connect(&w, &MainWindow::extractAllButton,extractAll);//same as extract but for all the files
         view(file, &w);
         qDebug() << "2 params!";
         return a.exec();

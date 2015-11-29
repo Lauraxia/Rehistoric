@@ -61,7 +61,7 @@ void MainWindow::on_extractButton_clicked()
 }
 void MainWindow::on_addButton_clicked()
 {
-    emit addButton(add(QString *files));
+    emit addButton(getSelected());
     //connect(addButton, SIGNAL(clicked()),main, SLOT(add()))
 }
 void MainWindow::on_extractAllButton_clicked()
@@ -73,10 +73,7 @@ void MainWindow::on_removedButton_clicked()
 {
     emit removeButton(getSelected());
 }
-void MainWindow::remove()
-{
 
-}
 
 QStringList MainWindow::getSelected()
 {

@@ -17,8 +17,7 @@ public:
     void addFile(QString name, QString size, QDateTime dateModified, QDateTime dateCreated);
 
     QStringList getSelected();
-    void remove();
-    void add();
+    QStringList add(QStringList list);
 
 
 private slots:
