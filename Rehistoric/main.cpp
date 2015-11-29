@@ -235,7 +235,7 @@ int extractSpecific(QString archive, QString file)
     {
         QDir(destination).removeRecursively(); //TODO this is awful, but program will hang if we don't
     }
-    extractArchive(archive, destination);
+    extractArchive(archive.split(dirSep).last(), destination);
 
     //check all extracted files for the file to be patched
     QStringList dirList = QDir(destination).entryList();
