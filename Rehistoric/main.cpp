@@ -10,7 +10,7 @@ int create(QString *files, int numFiles);
 int extract(QString *files, int numFiles);
 int extractSpecific(QString archive, QString file);
 void extract2(QStringList selected);
-int extractAll(QString file);
+void extractAll(QString file);
 void remove(QString archive, QString *files, int numFiles);
 void listArchive(QString archiveName, MainWindow *w);
 
@@ -301,7 +301,7 @@ QString getArchiveDestination(QString file)
     return tmpDir + dirSep + file;
 }
 
-int extractAll(QString file)
+void extractAll(QString file)
 {
     QString destination = getArchiveDestination(file);
     qDebug() << "extractAll to: " << destination;
@@ -362,7 +362,7 @@ int extractAll(QString file)
     //TODO FIX: we can't do this here, because sometimes we need to extractAll and then read the contents!
     //QDir(destination).removeRecursively();
 
-    return 0;// maybe void instead?
+    //return 0;// maybe void instead?
 }
 
 
@@ -388,8 +388,7 @@ void add(QString *files, int numFiles)
     //check all extracted files for the file to be patched
     QStringList dirList = QDir(destination).entryList();
     //removing . and .. entries in dir listing
-    int indexdotdot = dirList.indexOf("..");
-    dirList.removeAt(indexdotdot);
+    dirList.removeAt(dirList.indexOf(".."));
     dirList.removeAt(dirList.indexOf("."));
     //list of patches
     QStringList patchList = dirList;//.filter(".patch");
