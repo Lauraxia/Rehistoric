@@ -18,6 +18,8 @@ public:
 
     QStringList getSelected();
     void remove();
+    void add();
+
 
 private slots:
     void on_extractButton_clicked();
