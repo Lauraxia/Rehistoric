@@ -13,7 +13,7 @@ int extractAll(QString file);
 void remove(QString archive, QString *files, int numFiles);
 void listArchive(QString archiveName, MainWindow *w);
 
-int add(QString *files, int numFiles);
+void add(QString *files, int numFiles);
 QString findNextFile(QString currentFileName, QStringList dirList);
 int view(QString file, MainWindow *w);
 //MainWindow *mainW;
@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
         QObject::connect(&w, &MainWindow::extractButton, extract2);
         //QObject::connect(w, &QPushButton::clicked, someFunction);
         //QObject::connect(&w,&MainWindow::addButton, add); //grab the needed stuff for adding
-        //QObject::connect(&w, &MainWindow::extractAllButton,extractAll);//same as extract but for all the files
+        QObject::connect(&w, &MainWindow::extractAllButton,extractAll);//same as extract but for all the files
         view(file, &w);
         qDebug() << "2 params!";
         return a.exec();
@@ -282,7 +282,7 @@ int extractAll(QString file)
 }
 
 
-int add(QString *files, int numFiles)
+void add(QString *files, int numFiles)
 {
     //find the archive filename from the list
     QString archive;
@@ -371,7 +371,7 @@ int add(QString *files, int numFiles)
     QDir().setCurrent(oldWorkDir);
     deletePatches(filesToDelete << origFile);
     qDebug() << filesToDelete;
-    return 0;
+    //return 0;
 }
 //find next patch file
 QString findNextFile(QString currentFileName, QStringList dirList)

@@ -66,7 +66,7 @@ void MainWindow::on_addButton_clicked()
 }
 void MainWindow::on_extractAllButton_clicked()
 {
-    emit extractAllButton(getSelected());
+    emit extractAllButton(getSelectedQString());
    // connect(extractAllButton, SIGNAL(clicked()), main, SLOT(extractAll(getSelected())));
 }
 void MainWindow::on_removedButton_clicked()
@@ -74,6 +74,19 @@ void MainWindow::on_removedButton_clicked()
     emit removeButton(getSelected());
 }
 
+QString MainWindow::getSelectedQString()
+{
+    QList<QTreeWidgetItem *> itemList;
+    QString selected;
+    itemList = this->ui->treeWidget->selectedItems();
+    foreach(QTreeWidgetItem *item, itemList)
+    {
+       //get filename for each selected item
+       selected += item->text(0);
+       //selectedList.append(str);
+    }
+    return selected;
+}
 
 QStringList MainWindow::getSelected()
 {
