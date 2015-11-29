@@ -10,6 +10,8 @@ int create(QString *files, int numFiles);
 int extract(QString *files, int numFiles);
 void extract2(QStringList selected);
 int extractAll(QString file);
+void remove(QString archive, QString *files, int numFiles);
+void listArchive(QString archiveName, MainWindow *w);
 
 int add(QString *files, int numFiles);
 QString findNextFile(QString currentFileName, QStringList dirList);
@@ -83,6 +85,10 @@ int main(int argc, char *argv[])
         else if (mode == "extractAll")
         {
             extractAll(files[0]);
+        }
+        else if (mode == "remove")
+        {
+            remove(files[0], files, numFiles);
         }
 
     }
@@ -248,7 +254,7 @@ int extractAll(QString file)
         }
     }
     qDebug() << origFile;
-    //apply all patches in correct order
+    //apply all patches in correct orderhttps://en.wikipedia.org/wiki/Id
     QString fileName = origFile;
     QString oldWorkDir = QDir().currentPath();
     QStringList actualFilesToCopy = QStringList(); //the files the user wants
@@ -389,6 +395,116 @@ int view(QString file, MainWindow *w)
 
     //then add each file's info:
     w->addFile(QString("test"), QString("test2"), QDateTime::currentDateTime(), QDateTime::currentDateTime());
+    listArchive(file,w);
     return 0;
 }
+void listArchive(QString archiveName, MainWindow *w)
+{
+//    QProcess process;
+//    QStringList args = QStringList();
+//    args << "-l" << archiveName;
+//    qDebug() << "unzip" << args;
+//    process.start("unzip", args, QIODevice::ReadWrite);
+//    process.waitForFinished();
+//    QString result(process.readAllStandardOutput());
 
+//    QStringList lines = result.split("\n");
+//    for (int i = 3; i < lines.length()-3; i++)
+//    {
+//        qDebug() << lines[i].split(QRegExp("\\s+"));
+
+//    }
+    extractAll(archiveName);
+    qDebug() << "done extracting";
+//    QString destination = tmpDir + dirSep + archiveName;
+    QStringList dirList = QDir().entryList();
+    //removing . and .. entries in dir listing
+    dirList.removeAt(dirList.indexOf(".."));
+    dirList.removeAt(dirList.indexOf("."));
+
+    for (int i = 0; i < dirList.length(); i++)
+    {
+        QString tmp = dirList[i];
+        qDebug() << tmp;
+
+        QFileInfo tmpinfo = QFileInfo(tmp);
+        qDebug() << tmpinfo.lastModified() << tmpinfo.size();
+        w->addFile(tmp,QString::number(tmpinfo.size()),tmpinfo.lastModified(),QDateTime::currentDateTime());
+    }
+}
+
+void remove(QString archive, QString *files, int numFiles) {
+    qDebug() << archive;
+    //make subdir in tmpDir and extract archive to it
+    QString destination = tmpDir + dirSep + archive; // temp dir to extract archive to
+    qDebug() << destination;
+    QDir().mkdir(destination);
+    extractArchive(archive, destination);
+
+    //check all extracted files for the file to be patched
+    QStringList dirList = QDir(destination).entryList();
+    //removing . and .. entries in dir listing
+    int indexdotdot = dirList.indexOf("..");
+    dirList.removeAt(indexdotdot);
+    dirList.removeAt(dirList.indexOf("."));
+    //list of patches
+    QStringList patchList = dirList;//.filter(".patch");
+    QString origFile;
+    for (int i = 0; i < dirList.length(); i++)
+    {
+        QString tmp = dirList[i];
+        qDebug() << tmp;
+        if (!tmp.endsWith(".patch"))
+        {
+            origFile = tmp;
+        }
+    }
+    qDebug() << origFile;
+    //apply all patches in correct order
+    QString fileName = origFile;
+    QString oldWorkDir = QDir().currentPath();
+    QStringList filesToDelete = QStringList();
+    QDir().setCurrent(destination);
+    do
+    {
+        QString patch = findNextFile(fileName, dirList);
+        qDebug() << "Found:" << patch << "containing" << fileName;
+        QString tmp = patch;
+        tmp.remove(fileName).remove(".patch");
+        qDebug() << "filename " << fileName;
+        applyPatch(patch, tmp);
+        filesToDelete << tmp;
+        fileName = tmp;
+        //QDir().rename(patch, destination2 + dirSep + patch.split(dirSep).last());
+        qDebug() << "findNext " << findNextFile(fileName,dirList);
+    } while (!findNextFile(fileName,dirList).isEmpty());
+
+    for (int i = 0; i < numFiles; i++)
+    {
+        QDir(destination).remove(files[i]);
+        qDebug() << "removed " << files[i];
+    }
+    QStringList dirList2 = QDir(destination).entryList();
+    //removing . and .. entries in dir listing
+    dirList.removeAt(dirList2.indexOf(".."));
+    dirList.removeAt(dirList2.indexOf("."));
+    qDebug() << dirList2;
+    QString files2[dirList2.length()];
+    for(int i = 0; i < dirList2.length(); i++)
+    {
+        files2[i] = dirList2[i];
+    }
+
+    create(files2, dirList2.size());
+
+    QString destArchive = oldWorkDir + dirSep + "hist." + rehistoricArchiveExtension;
+    qDebug() << destArchive;
+    if (QFile::exists(destArchive))
+    {
+       QFile::remove(destArchive);
+    }
+    QDir().rename("hist."+rehistoricArchiveExtension, destArchive);
+    QDir().setCurrent(oldWorkDir);
+    QDir(destination).removeRecursively();
+
+}
