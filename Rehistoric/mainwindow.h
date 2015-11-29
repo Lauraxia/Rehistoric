@@ -18,6 +18,8 @@ public:
 
     QStringList getSelected();
     QStringList add(QStringList list);
+    QString getSelectedQString();
+
 
 
 private slots:
@@ -30,7 +32,7 @@ private slots:
 signals:
     int extractButton(QStringList selected);
     int removeButton(QStringList selected);
-    int extractAllButton(QStringList selected);
+    int extractAllButton(QString selected);
     int addButton(QStringList selected);
 
 
