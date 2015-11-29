@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
     {
         qDebug() << "What are you doing?";
 
-        w.show();
-        //return 0;
+        //w.show();
+        return 0;
     }
     else if (argc == 2)
     {
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
 
     }
 
-    w.show();
+    //w.show();
     //mainW = &w;
     //w.addFile();
 
@@ -530,7 +530,7 @@ void listArchive(QString archiveName, MainWindow *w)
         else
         {
             //add to our file list:
-            w->addFile(tmp,QString::number(tmpinfo.size()),tmpinfo.lastModified(),QDateTime::currentDateTime());
+            w->addFile(tmp,(QString::number(tmpinfo.size()) + " B"),tmpinfo.lastModified());
             //TODO: do we need to track which things we've added? Will this mess up actions based on selection index later?
         }
     }
