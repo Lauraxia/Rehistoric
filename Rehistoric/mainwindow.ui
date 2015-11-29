@@ -110,22 +110,6 @@
     </property>
    </widget>
   </widget>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>400</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuExtract_All">
-    <property name="title">
-     <string>Extract All</string>
-    </property>
-   </widget>
-   <addaction name="menuExtract_All"/>
-  </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
