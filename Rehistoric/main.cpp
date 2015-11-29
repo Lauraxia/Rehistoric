@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
     }
     else
     {
+        w.show();
         //1st arg = action, 2nd+ = file paths
         QString mode = argv[1];
         qDebug() << mode << " " << argc;
@@ -104,7 +105,7 @@ int main(int argc, char *argv[])
 
     }
 
-    //w.show();
+    w.show();
     //mainW = &w;
     //w.addFile();
 
@@ -367,8 +368,7 @@ void extractAll(QString file)
     QString oldWorkDir = QDir().currentPath();
     QStringList actualFilesToCopy = QStringList(); //the files the user wants
     QDir().setCurrent(destination);
-    do
-    {
+
         QString patch = findNextFile(fileName, dirList);
         qDebug() << "Found:" << patch << "containing" << fileName;
         QString tmp = patch;
@@ -378,7 +378,7 @@ void extractAll(QString file)
         actualFilesToCopy << tmp;
         fileName = tmp;
         qDebug() << "findNext " << findNextFile(fileName,dirList);
-    } while (!findNextFile(fileName,dirList).isEmpty());
+
     actualFilesToCopy << origFile;
     for (int i = 0; i < actualFilesToCopy.length(); i++)
     {
@@ -401,7 +401,7 @@ void extractAll(QString file)
 void add(QString archive, QString file)//mar
 {
     //find the archive filename from the list
-    if(!archive.endsWith('.zip')){archive += '.zip';}//mario:don't need the followinng because we're getting the archive name from the args
+    //mario:don't need the followinng because we're getting the archive name from the args
 
     qDebug() << archive;
     //make subdir in tmpDir and extract archive to it
@@ -425,8 +425,8 @@ void add(QString archive, QString file)//mar
     QString oldWorkDir = QDir().currentPath();
     QStringList filesToDelete = QStringList();
     QDir().setCurrent(destination);
-    do
-    {
+    //do
+    //{
         QString patch = findNextFile(fileName, dirList);
         qDebug() << "Found:" << patch << "containing" << fileName;
         QString tmp = patch;
@@ -437,7 +437,7 @@ void add(QString archive, QString file)//mar
         fileName = tmp;
         //QDir().rename(patch, destination2 + dirSep + patch.split(dirSep).last());
         qDebug() << "findNext " << findNextFile(fileName,dirList);
-    } while (!findNextFile(fileName,dirList).isEmpty());
+    //} while (!findNextFile(fileName,dirList).isEmpty());
 
     qDebug() << "done patching, final file" << fileName;
     qDebug() << "current patchList: " << patchList;
